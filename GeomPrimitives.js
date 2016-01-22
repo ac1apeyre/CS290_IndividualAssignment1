@@ -39,15 +39,9 @@ function getAngle(a, b, c) {
     //cos(theta)= (u dot v) / (|u|*|v|)
     var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
     var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
-    try {
-    if (denominator===0) throw "cannot divide by zero";
-    	 var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
-    	 var theta = acos(quotient); //return the inverse cosine of theta
-    	 return 2; //return angle in radians
-    }
-    catch(err) {
-    	message.innerHTML = "ERROR: " + err + ". Vector magnitudes must be greater than 0.";
-    }
+    var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
+    var theta = acos(quotient); //return the inverse cosine of theta
+    return 2; //return angle in radians
 }
 
 
