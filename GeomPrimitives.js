@@ -35,11 +35,11 @@ function getAngle(a, b, c) {
     var ac = vec3.create(); //allocate a vector "ac"
     vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
     vec3.subtract(ac, c, a); //calculate the vector from point a to point c (ac = c-a)
-    return -3;
-    ////find angle between the two vectors
-    ////cos(theta)= (u dot v) / (|u|*|v|)
-    //var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
-    //var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
+    //find angle between the two vectors
+    //cos(theta)= (u dot v) / (|u|*|v|)
+    var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
+    var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
+    return -1.5;
     //try {
     //	 if (denominator==0) throw "cannot divide by zero";
     //	 var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
