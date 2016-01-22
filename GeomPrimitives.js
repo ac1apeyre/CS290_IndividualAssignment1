@@ -33,22 +33,22 @@ function getAngle(a, b, c) {
     //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
     var ab = vec3.create(); //allocate a vector "ab"
     var ac = vec3.create(); //allocate a vector "ac"
-    vec2.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
-    vec2.subtract(ac, c, a); //calculate the vector from point a to point c (ac = c-a)
-    
-    //find angle between the two vectors
-    //cos(theta)= (u dot v) / (|u|*|v|)
-    var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
-    var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
-    try {
-    	 if (denominator==0) throw "cannot divide by zero";
-    	 var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
-    	 var theta = acos(quotient); //return the inverse cosine of theta
-    	 return theta; //return angle in radians
-    }
-    catch(err) {
-    	message.innerHTML = "ERROR: " + err + ". Vector magnitudes must be greater than 0.";
-    }
+    vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
+    vec3.subtract(ac, c, a); //calculate the vector from point a to point c (ac = c-a)
+    return -2;
+    ////find angle between the two vectors
+    ////cos(theta)= (u dot v) / (|u|*|v|)
+    //var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
+    //var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
+    //try {
+    //	 if (denominator==0) throw "cannot divide by zero";
+    //	 var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
+    //	 var theta = acos(quotient); //return the inverse cosine of theta
+    //	 return theta; //return angle in radians
+    //}
+    //catch(err) {
+    //	message.innerHTML = "ERROR: " + err + ". Vector magnitudes must be greater than 0.";
+    //}
 }
 
 
