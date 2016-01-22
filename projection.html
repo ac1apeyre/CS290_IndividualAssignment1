@@ -1,0 +1,112 @@
+<!--Programmer: Chris Tralie!-->
+<!--Purpose: Front end visualizer/debugger for projection function!-->
+<html>
+<head>
+<!-- This is how you include external scripts in Javascript !-->
+<script src = "GeomPrimitives.js"></script>
+<script src= "gl-matrix-min.js"></script>
+<script src = "plotly.min.js"></script>
+<body>
+
+<h2><a name = "example">Example: Vector Projection</a></h2>
+
+<table>
+<tr>
+<td>
+<!--Input Region!-->
+<table>
+<tr>
+<td><h2><font color = "#0000ff">u:</u> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "ux_1" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "uy_1" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "uz_1" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#ff0000">v:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "vx_1" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "vy_1" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "vz_1" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+</table>
+</td>
+<td>
+<!--Visualization Region!-->
+<table border = "1" width = 500 height = 500>
+<tr><td>
+<div id = "projVis">Visualization goes here once you compute the projection</div>
+</td></tr>
+</table>
+</td>
+</tr>
+</table>
+
+<button type = "button" onclick = "callProjVector()">Compute Projection of u onto v</button>
+<BR><BR>
+
+<table>
+<tr><td><h2><font color = "#ff00ff"><u>Projection u onto v:</u> </h2></td><td><input type="text" id="projAnswer" size="10"> </input></td></tr>
+<tr><td><h2><font color = "#00ffff"><u>Perpendicular projection u onto v:</u> </h2></td><td><input type="text" id="projPerpAnswer" size="10"> </input></td></tr>
+</table>
+
+
+<script>
+//This function extracts the components of two different vectors from text
+//fields in the web page and outputs the results in text and in a GUI
+function callProjVector() {
+    var ux = parseFloat(document.getElementById("ux_1").value);
+    var uy = parseFloat(document.getElementById("uy_1").value);
+    var uz = parseFloat(document.getElementById("uz_1").value);
+    u = vec3.fromValues(ux, uy, uz);
+    
+    var vx = parseFloat(document.getElementById("vx_1").value);
+    var vy = parseFloat(document.getElementById("vy_1").value);
+    var vz = parseFloat(document.getElementById("vz_1").value);
+    v = vec3.fromValues(vx, vy, vz);
+    
+    //Log the vec3 objects to the console to make sure everything was parsed correctly
+    console.log("Computing projection of " + vec3.str(u) + " onto " + vec3.str(v));
+    
+    //Perform the projection
+    var proj = projVector(u, v);
+    var projPerp = projPerpVector(u, v);
+    //Output result to two decimal places
+    document.getElementById("projAnswer").value = "(" + proj[0].toFixed(2) + ", " + proj[1].toFixed(2) + ", " + proj[2].toFixed(2) + ")";
+    document.getElementById("projPerpAnswer").value = "(" + projPerp[0].toFixed(2) + ", " + projPerp[1].toFixed(2) + ", " + projPerp[2].toFixed(2) + ")";
+    
+    
+    //Plot u, v, and the parallel/perpendicular projections using plot.ly
+    var uviz = { x: [0, ux], y: [0, uy], z: [0, uz],
+      mode: 'markers+lines', line: {color: '#0000ff', width: 10},
+      type: 'scatter3d', name: 'u',
+      marker: {color: '#0000ff', size: 4, symbol: 'circle'}
+    };
+    var vviz = { x: [0, vx], y: [0, vy], z: [0, vz],
+      mode: 'markers+lines', line: {color: '#ff0000', width: 10},
+      type: 'scatter3d', name:'v',
+      marker: {color: '#ff0000', size: 4, symbol: 'circle'}
+    };
+    var projviz = { x: [0, proj[0]], y: [0, proj[1]], z: [0, proj[2]],
+      mode: 'markers+lines', line: {color: '#ff00ff', width: 10},
+      type: 'scatter3d', name:'proj',
+      marker: {color: '#ff00ff', size: 4, symbol: 'circle'}
+    };
+    var projperpviz = { x: [0, projPerp[0]], y: [0, projPerp[1]], z: [0, projPerp[2]],
+      mode: 'markers+lines', line: {color: '#00ffff', width: 10, arrowhead:7},
+      type: 'scatter3d', name:'projperp',
+      marker: {color: '#00ffff', size: 4, symbol: 'circle'}
+    };
+    var axes = getAxesEqual([u, v, proj, projPerp]);
+    var data = [uviz, vviz, projviz, projperpviz, axes.x, axes.y, axes.z];
+    var layout = {
+      autosize: false, width: 500, height: 500,
+      margin: { l: 0, r: 0, b: 0, t: 65 }
+    };
+    Plotly.newPlot('projVis', data, layout);
+}
+</script>
+
+
+</body>
+</html>

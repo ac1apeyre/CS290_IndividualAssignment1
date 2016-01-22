@@ -1,0 +1,91 @@
+<!--Programmer: Chris Tralie!-->
+<!--Purpose: Front end for above or below plane tester for choosing 4 points!-->
+<html>
+<head>
+<!-- This is how you include external scripts in Javascript !-->
+<script src = "GeomPrimitives.js"></script>
+<script src= "gl-matrix-min.js"></script>
+<script src = "plotly.min.js"></script>
+<body>
+
+<h2>Task 3: Point Above Or Below Plane? (5 points)</h2>
+
+<h2>Plane Points</h2>
+
+<table>
+<tr>
+<td><h2>a: </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "ax_3" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "ay_3" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "az_3" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2>b: </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "bx_3" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "by_3" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "bz_3" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2>c: </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "cx_3" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "cy_3" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "cz_3" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+</table>
+
+<h2>Test Point</h2>
+<table>
+<tr>
+<td><h2>d: </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "dx_3" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "dy_3" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "dz_3" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+</table>
+
+
+
+<button type = "button" onclick = "callComputeAboveBelow()">Compute Above Or Below</button>
+<table>
+<tr><td><h2>Above Or Below: </h2></td><td><input type="text" id="aboveBelowAnswer" size="10"> </input></td></tr>
+</table>
+
+
+<script>
+//This function parses point a, b, c, and d and determines if d is above
+//the plane spanned by a, b, and c
+function callComputeAboveBelow() {
+    var ax = parseFloat(document.getElementById("ax_3").value);
+    var ay = parseFloat(document.getElementById("ay_3").value);
+    var az = parseFloat(document.getElementById("az_3").value);
+    var a = vec3.fromValues(ax, ay, az);
+    
+    var bx = parseFloat(document.getElementById("bx_3").value);
+    var by = parseFloat(document.getElementById("by_3").value);
+    var bz = parseFloat(document.getElementById("bz_3").value);
+    var b = vec3.fromValues(bx, by, bz);
+
+    var cx = parseFloat(document.getElementById("cx_3").value);
+    var cy = parseFloat(document.getElementById("cy_3").value);
+    var cz = parseFloat(document.getElementById("cz_3").value);
+    var c = vec3.fromValues(cx, cy, cz);
+
+    var dx = parseFloat(document.getElementById("dx_3").value);
+    var dy = parseFloat(document.getElementById("dy_3").value);
+    var dz = parseFloat(document.getElementById("dz_3").value);
+    var d = vec3.fromValues(dx, dy, dz);
+    
+    //Perform the computation
+    var res = getAboveOrBelow(a, b, c, d);
+    //Output result
+    document.getElementById("aboveBelowAnswer").value = "" + res;
+}
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!--Programmer: Chris Tralie!-->
+<!--Purpose: Front end point chooser / debugger for line segment intersection function!-->
+<html>
+<head>
+<!-- This is how you include external scripts in Javascript !-->
+<script src = "GeomPrimitives.js"></script>
+<script src= "gl-matrix-min.js"></script>
+<script src = "plotly.min.js"></script>
+<body>
+
+<h2><a name = "angle">Task 4: Line Segment Intersection (10 points)</a></h2>
+
+In the GUI below, choose two line segments in the plane (z = 0) to test your code.  Left click to select the first point and right click to select the second point.  The intersection will be re-computed real time and drawn as a black point as soon as both segments have two points selected.  If no intersection occurs, no black point will be drawn<BR><BR>
+
+<b>NOTE: Your code is responsible for computing line segment intersections in 3D even though this is only testing it in 2D.</b>  Please write your own test cases in 3D to make sure it works (there will be some 3D examples included in the batch tests)<BR><BR>
+
+<table>
+<tr>
+<td width = "200">
+<button type = "button" onclick = "callSelectSegment1()">Select Segment 1</button><BR><BR>
+<button type = "button" onclick = "callSelectSegment2()">Select Segment 2</button><BR><BR>
+
+<table border = "1" cellpadding = 2>
+<tr><td align = "right"><font color = "#ff0000"><b>a</b></font></td><td><div id="a">Not Selected</div></td></tr>
+<tr><td align = "right"><font color = "#ff00ff"><b>b</b></font></td><td><div id="b">Not Selected</div></td></tr>
+<tr><td align = "right"><font color = "#0000ff"><b>c</b></font></td><td><div id="c">Not Selected</div></td></tr>
+<tr><td align = "right"><font color = "#00ffff"><b>d</b></font></td><td><div id="d">Not Selected</div></td></tr>
+<tr><td>Intersection</td><td><div id="Intersection">null</div></td></tr>
+</table>
+</td>
+<td>
+<canvas id = "segcanvas" width = "600" height = "600" style="border:1px solid #000000;">
+</canvas>
+</td>
+</tr>
+</table>
+
+<script>
+var a = null, b = null, c = null, d = null;
+var intersection = null;
+var canvas = document.getElementById('segcanvas');
+var ctx = canvas.getContext("2d"); //For drawing
+var choosing1 = true;
+//Need this to disable that annoying menu that pops up on right click
+canvas.addEventListener("contextmenu", function(e){ e.stopPropagation(); e.preventDefault(); return false; }); 
+
+function callSelectSegment1() {
+    choosing1 = true;
+}
+
+function callSelectSegment2() {
+    choosing1 = false;
+}
+
+function repaint() {
+    var dW = 5;
+    var W = canvas.width;
+    var H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    if (!(a === null)) {
+        ctx.fillStyle = "#ff0000";
+        ctx.fillRect(a[0]-dW, a[1]-dW, dW*2+1, dW*2+1);
+    }
+    if (!(b === null)) {
+        ctx.fillStyle = "#ff00ff";
+        ctx.fillRect(b[0]-dW, b[1]-dW, dW*2+1, dW*2+1);
+    }
+    if (!(a === null) && !(b === null)) {
+        ctx.fillStyle = "#000000";
+        ctx.beginPath();
+        ctx.moveTo(a[0], a[1]);
+        ctx.lineTo(b[0], b[1]);
+        ctx.stroke();
+    }
+    if (!(c === null)) {
+        ctx.fillStyle = "#0000ff";
+        ctx.fillRect(c[0]-dW, c[1]-dW, dW*2+1, dW*2+1);
+    }
+    if (!(d === null)) {
+        ctx.fillStyle = "#00ffff";
+        ctx.fillRect(d[0]-dW, d[1]-dW, dW*2+1, dW*2+1);
+    }
+    if (!(c === null) && !(d === null)) {
+        ctx.fillStyle = "#000000";
+        ctx.beginPath();
+        ctx.moveTo(c[0], c[1]);
+        ctx.lineTo(d[0], d[1]);
+        ctx.stroke();
+    }
+    if (!(intersection === null)) {
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(intersection[0]-dW, intersection[1]-dW, dW*2+1, dW*2+1);        
+    }
+}
+
+function selectPoint(evt) {
+    var mousePos = getMousePos(canvas, evt);
+    var X = mousePos.X;
+    var Y = mousePos.Y
+    var clickType = "LEFT";
+	evt.preventDefault();
+	if (evt.which) {
+	    if (evt.which == 3) clickType = "RIGHT";
+	    if (evt.which == 2) clickType = "MIDDLE";
+	}
+	else if (evt.button) {
+	    if (evt.button == 2) clickType = "RIGHT";
+	    if (evt.button == 4) clickType = "MIDDLE";
+	}
+	if (choosing1) {
+	    if (clickType == "LEFT") {
+	        a = vec3.fromValues(X+0.0, Y+0.0, 0.0);
+	        document.getElementById('a').innerHTML = "(" + a[0].toFixed(1) + "," + a[1].toFixed(1) + ")";
+	    }
+	    else {
+	        b = vec3.fromValues(X+0.0, Y+0.0, 0.0);
+	        document.getElementById('b').innerHTML = "(" + b[0].toFixed(1) + "," + b[1].toFixed(1) + ")";
+	    }
+	}
+	else {
+	    if (clickType == "LEFT") {
+	        c = vec3.fromValues(X, Y, 0.0);
+	        document.getElementById('c').innerHTML = "(" + c[0].toFixed(1) + "," + c[1].toFixed(1) + ")";
+	    }
+	    else {
+	        d = vec3.fromValues(X, Y, 0.0);
+	        document.getElementById('d').innerHTML = "(" + d[0].toFixed(1) + "," + d[1].toFixed(1) + ")";
+	    }	
+	}
+	if (!(a === null) && !(b === null) && !(c === null) && !(d === null)) {
+	    intersection = getLineSegmentIntersection(a, b, c, d);
+	    if (intersection === null) {
+	        document.getElementById('Intersection').innerHTML = "null";
+	    }
+	    else {
+	        document.getElementById('Intersection').innerHTML = "(" + intersection[0].toFixed(1) + "," + intersection[1].toFixed(1) + ")";
+	    }
+	}
+	repaint();
+}
+
+canvas.addEventListener("mousedown", selectPoint);
+canvas.addEventListener("touchstart", selectPoint); //Works on mobile devices!
+repaint();
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!--Programmer: Chris Tralie!-->
+<!--Purpose: Front end point chooser / debugger for triangle circumscriber function!-->
+<html>
+<head>
+<!-- This is how you include external scripts in Javascript !-->
+<script src = "GeomPrimitives.js"></script>
+<script src= "gl-matrix-min.js"></script>
+<script src = "plotly.min.js"></script>
+<body>
+
+<h2><a name = "angle">Task 5: Triangle Circumscribed Circle (15 points)</a></h2>
+
+In the GUI below, choose three points in the plane the plane (z = 0) to test your code.  Left click to select the points, and right click to delete the most recently selected point.  The circumcenter of the resulting triangle will be re-computed real time and drawn as a black point as soon as three points have been selected.  The circumcircle with the calculated radius will be drawn around the circumcenter<BR><BR>
+
+<b>NOTE: Your code is responsible for computing the triangle circumcenter and radius in 3D even though this is only testing it in 2D.</b>  Please write your own test cases in 3D to make sure it works (there will be some 3D examples included in the batch tests)<BR><BR>
+
+<table>
+<tr>
+<td width = "200">
+<table border = "1" cellpadding = 2>
+<tr><td align = "right"><font color = "#ff0000"><b>a</b></font></td><td><div id="Point0">Not Selected</div></td></tr>
+<tr><td align = "right"><font color = "#ff00ff"><b>b</b></font></td><td><div id="Point1">Not Selected</div></td></tr>
+<tr><td align = "right"><font color = "#0000ff"><b>c</b></font></td><td><div id="Point2">Not Selected</div></td></tr>
+<tr><td align = "right"><font color = "#000000"><b>Circumcenter</b></font></td><td><div id="Circumcenter"></div></td></tr>
+<tr><td align = "right">Radius</td><td><div id="Radius"></div></td></tr>
+</table>
+</td>
+<td>
+<canvas id = "segcanvas" width = "600" height = "600" style="border:1px solid #000000;">
+</canvas>
+</td>
+</tr>
+</table>
+
+<script>
+var Ps = []; //Points on the triangle
+var Circumcenter = null;
+var Radius = 0.0;
+var canvas = document.getElementById('segcanvas');
+var ctx = canvas.getContext("2d"); //For drawing
+//Need this to disable that annoying menu that pops up on right click
+canvas.addEventListener("contextmenu", function(e){ e.stopPropagation(); e.preventDefault(); return false; }); 
+
+colors = ["#ff0000", "#ff00ff", "#0000ff"];
+
+function repaint() {
+    var dW = 5;
+    var W = canvas.width;
+    var H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    
+    //Draw circumcenter and circumcircle
+    if (!(Circumcenter === null)) {
+        //Draw circumcenter
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(Circumcenter[0]-dW, Circumcenter[1]-dW, dW*2+1, dW*2+1);
+        //Draw circumcircle
+        ctx.beginPath();
+        ctx.arc(Circumcenter[0], Circumcenter[1], Radius, 0, 2*Math.PI);
+        ctx.stroke();
+    }
+    
+    //Draw triangle points
+    for (var i = 0; i < Ps.length; i++) {
+        ctx.fillStyle = colors[i];
+        ctx.fillRect(Ps[i][0]-dW, Ps[i][1]-dW, dW*2+1, dW*2+1);
+    }
+    
+    //Draw triangle edges
+    ctx.fillStyle = "#000000";
+    for (var i = 0; i < Ps.length; i++) {
+        ctx.beginPath();
+        ctx.moveTo(Ps[i][0], Ps[i][1]);
+        ctx.lineTo(Ps[(i+1)%Ps.length][0], Ps[(i+1)%Ps.length][1]);
+        ctx.stroke();        
+    }
+}
+
+function finalizePointSelection() {
+	if (Ps.length == 3) {
+	    var res = getTriangleCircumcenter(Ps[0], Ps[1], Ps[2]);
+	    Circumcenter = res.Circumcenter;
+	    Radius = res.Radius;
+	    if (Circumcenter === null) {
+	        document.getElementById('Circumcenter').innerHTML = "null";
+	    }
+	    else {
+	        document.getElementById('Circumcenter').innerHTML = "(" + Circumcenter[0].toFixed(1) + "," + Circumcenter[1].toFixed(1) + ")";
+	    }
+	    document.getElementById('Radius').innerHTML = "" + Radius;
+	}
+	repaint();
+}
+
+function selectPoint(evt) {
+    var mousePos = getMousePos(canvas, evt);
+    var X = mousePos.X;
+    var Y = mousePos.Y
+    var clickType = "LEFT";
+	evt.preventDefault();
+	if (evt.which) {
+	    if (evt.which == 3) clickType = "RIGHT";
+	    if (evt.which == 2) clickType = "MIDDLE";
+	}
+	else if (evt.button) {
+	    if (evt.button == 2) clickType = "RIGHT";
+	    if (evt.button == 4) clickType = "MIDDLE";
+	}
+    
+    if (clickType == "LEFT") {
+        //Add a point
+        if (Ps.length < 3) {
+            Ps.push(vec3.fromValues(X, Y, 0));
+        }
+        else {
+            //If there's already a third point, simply replace it
+            Ps[2] = vec3.fromValues(X, Y, 0);
+        }
+    }
+    else {
+        //Remove point
+        if (Ps.length > 0) {
+            Ps.pop();
+        }
+    }
+    //Update text describing point coordinates
+    for (var i = 0; i < 3; i++) {
+        if (i < Ps.length) {
+            document.getElementById("Point"+i).innerHTML = "(" + Ps[i][0].toFixed(1) + "," + Ps[i][1].toFixed(1) + ")";    
+        }
+        else {
+            document.getElementById("Point"+i).innerHTML = "Not Selected";            
+        }
+    }
+    finalizePointSelection();
+}
+
+canvas.addEventListener("mousedown", selectPoint);
+canvas.addEventListener("touchstart", selectPoint); //Works on mobile devices!
+repaint();
+
+</script>
+
+
+</body>
+</html>

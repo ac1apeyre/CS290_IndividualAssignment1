@@ -1,0 +1,125 @@
+<!--Programmer: Chris Tralie!-->
+<!--Purpose: Front end point chooser / debugger for area function!-->
+<html>
+<head>
+<!-- This is how you include external scripts in Javascript !-->
+<script src = "GeomPrimitives.js"></script>
+<script src= "gl-matrix-min.js"></script>
+<script src = "plotly.min.js"></script>
+<body>
+
+<h2>Task 2: Triangle Area Computation (5 points)</h2>
+
+<table>
+<tr>
+<td>
+<!--Input Region!-->
+<table>
+<tr>
+<td><h2><font color = "#0000ff">a:</u> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "ax_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "ay_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "az_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#ff0000">b:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "bx_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "by_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "bz_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#ff00ff">c:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "cx_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "cy_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "cz_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+</table>
+</td>
+<td>
+<!--Visualization Region!-->
+<table border = "1" width = 500 height = 500>
+<tr><td>
+<div id = "areaVis">Visualization goes here once you compute the triangle area</div>
+</td></tr>
+</table>
+</td>
+</tr>
+</table>
+<button type = "button" onclick = "callComputeAngle()">Compute triangle area</button>
+<table>
+<tr><td><h2>Area: </h2></td><td><input type="text" id="areaAnswer" size="10"> </input></td></tr>
+</table>
+
+<script>
+//This function extracts the angle between vectors ab and ac and outputs
+//the result as text, along with drawing the vectors in the GUI
+function callComputeAngle() {
+    var ax = parseFloat(document.getElementById("ax_2").value);
+    var ay = parseFloat(document.getElementById("ay_2").value);
+    var az = parseFloat(document.getElementById("az_2").value);
+    var a = vec3.fromValues(ax, ay, az);
+    
+    var bx = parseFloat(document.getElementById("bx_2").value);
+    var by = parseFloat(document.getElementById("by_2").value);
+    var bz = parseFloat(document.getElementById("bz_2").value);
+    var b = vec3.fromValues(bx, by, bz);
+
+    var cx = parseFloat(document.getElementById("cx_2").value);
+    var cy = parseFloat(document.getElementById("cy_2").value);
+    var cz = parseFloat(document.getElementById("cz_2").value);
+    var c = vec3.fromValues(cx, cy, cz);
+    
+    //Log the vec3 objects to the console to make sure everything was parsed correctly
+    console.log("Computing area of triangle with vertices " + vec3.str(a) + ", " + vec3.str(b) + ", and " + vec3.str(c));
+    
+    //Perform the projection
+    var area = getTriangleArea(a, b, c);
+    //Output result in radians up to two decimal places
+    document.getElementById("areaAnswer").value = area.toFixed(2);
+    
+    
+    //Plot u, v, and the parallel/perpendicular projections using plot.ly
+    var aviz = { x: [ax], y: [ay], z: [az],
+      mode: 'markers+lines', line: {color: '#ffffff', width: 2},
+      type: 'scatter3d', name: 'a',
+      marker: {color: '#0000ff', size: 4, symbol: 'circle'}
+    };
+    var bviz = { x: [bx], y: [by], z: [bz],
+      mode: 'markers+lines', line: {color: '#ffffff', width: 2},
+      type: 'scatter3d', name:'b',
+      marker: {color: '#ff0000', size: 4, symbol: 'circle'}
+    };
+    var cviz = { x: [cx], y: [cy], z: [cz],
+      mode: 'markers+lines', line: {color: '#ffffff', width: 2},
+      type: 'scatter3d', name:'c',
+      marker: {color: '#ff00ff', size: 4, symbol: 'circle'}
+    };
+    var abviz = { x: [ax, bx], y: [ay, by], z: [az, bz],
+      mode: 'lines', line: {color: '#000000', width: 10},
+      type: 'scatter3d', name: 'ab',
+    };
+    var acviz = { x: [ax, cx], y: [ay, cy], z: [az, cz],
+      mode: 'lines', line: {color: '#555555', width: 10},
+      type: 'scatter3d', name: 'ac',
+    };
+    var bcviz = { x: [bx, cx], y: [by, cy], z: [bz, cz],
+      mode: 'lines', line: {color: '#555555', width: 10},
+      type: 'scatter3d', name: 'bc',
+    };
+    var axes = getAxesEqual([a, b, c]);
+    var data = [aviz, bviz, cviz, abviz, acviz, bcviz, axes.x, axes.y, axes.z];
+    var layout = {
+      autosize: false, width: 500, height: 500,
+      margin: { l: 0, r: 0, b: 0, t: 65 }
+    };
+    Plotly.newPlot('areaVis', data, layout);    
+}
+
+</script>
+
+
+</body>
+</html>
