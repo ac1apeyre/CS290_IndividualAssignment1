@@ -29,7 +29,7 @@ function projPerpVector(u, v) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: angle (radians - float)
 function getAngle(a, b, c) {
-    return -6;
+    return -5;
 }
 
 
