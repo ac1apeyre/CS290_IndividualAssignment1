@@ -31,11 +31,11 @@ function projPerpVector(u, v) {
 function getAngle(a, b, c) {
     //create vectors from the given points
     //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
-    var ab = vec3.create(); //allocate a vector "ab"
-    var ac = vec3.create(); //allocate a vector "ac"
-    vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
-    vec3.subtract(ac, c, a); //calculate the vector from point a to point c (ac = c-a)
-    return -2;
+    //var ab = vec3.create(); //allocate a vector "ab"
+    //var ac = vec3.create(); //allocate a vector "ac"
+    //vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
+    //vec3.subtract(ac, c, a); //calculate the vector from point a to point c (ac = c-a)
+    return -1;
     ////find angle between the two vectors
     ////cos(theta)= (u dot v) / (|u|*|v|)
     //var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
