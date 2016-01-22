@@ -40,7 +40,7 @@ function getAngle(a, b, c) {
     var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
     var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
     var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
-    var theta = acos(quotient); //return the inverse cosine of theta
+    var theta = Math.acos(quotient); //return the inverse cosine of theta
     return 2; //return angle in radians
 }
 
