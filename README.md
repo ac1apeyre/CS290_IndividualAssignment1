@@ -5,7 +5,7 @@ COMPSCI/MATH290- Digital 3D Geometry
 Professor Chris Tralie
 Duke University Spring 2016
 _____________________________________
-
+ 
 Athenais Clemence Lapeyre (acl26)
 
 
