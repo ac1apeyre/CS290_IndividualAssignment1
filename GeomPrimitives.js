@@ -70,26 +70,25 @@ function getTriangleArea(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: 1 if d is above, -1 if d is below, 0 if d is on
 function getAboveOrBelow(a, b, c, d) {
-	return 5;
     //create plane vectors using points a, b, c
     //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
-    var v1 = vec3.create(); //allocate a vector "v1" (ab)
-    var v2 = vec3.create(); //allocate a vector "v2" (ac)
-    vec3.subtract(v1, b, a); //calculate the vector from point a to point b (ab = b-a)
-    vec3.subtract(v2, c, a); //calculate the vector from point a to point c (ac = c-a)
+    var u1 = vec3.create(); //allocate a vector "u1" (ab)
+    var u2 = vec3.create(); //allocate a vector "u2" (ac)
+    vec3.subtract(u1, b, a); //calculate the vector from point a to point b (ab = b-a)
+    vec3.subtract(u2, c, a); //calculate the vector from point a to point c (ac = c-a)
     
     //calculate plane normal using crossproduct
     var norm = vec3.create(); //allocate a vector for the plane normal
-    vec3.cross(cp, v1, v2); //calculate norm using cross product
+    vec3.cross(norm, u1, u2); //calculate norm using cross product
     
     //create vector from point on plane to point d, arbitrarily A to D
     var ad = vec3.create(); //allocate a vector "ad"
-    vec3.subtract(v1, d, a); //calculate the vector from point a to point d (ad = d-a)
+    vec3.subtract(u1, d, a); //calculate the vector from point a to point d (ad = d-a)
     
     //calculate dot product between normal and vector ad
     var dp = vec3.dot(norm, ad); //calculate dot product of normal and ad
     
- 
+ 	return 9;
     ////determine if d is above, below, or on plane ABC based on sign of the dot product
     //if (dp==0){
     //	return 0; // point is on the plane
