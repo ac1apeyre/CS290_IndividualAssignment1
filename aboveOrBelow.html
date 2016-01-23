@@ -84,47 +84,6 @@ function callComputeAboveBelow() {
     //Output result
     document.getElementById("aboveBelowAnswer").value = "" + res;
     
-    
-    //ME: try and plot points.....
-    var aviz = { x: [ax], y: [ay], z: [az],
-      mode: 'markers+lines', line: {color: '#ffffff', width: 10},
-      type: 'scatter3d', name: 'a',
-      marker: {color: '#0000ff', size: 10, symbol: 'circle'}
-    };
-    var bviz = { x: [bx], y: [by], z: [bz],
-      mode: 'markers+lines', line: {color: '#ffffff', width: 10},
-      type: 'scatter3d', name:'b',
-      marker: {color: '#ff0000', size: 10, symbol: 'circle'}
-    };
-    var cviz = { x: [cx], y: [cy], z: [cz],
-      mode: 'markers+lines', line: {color: '#ffffff', width: 10},
-      type: 'scatter3d', name:'c',
-      marker: {color: '#ff00ff', size: 10, symbol: 'circle'}
-    };
-    var dviz = { x: [dx], y: [dy], z: [dz],
-      mode: 'markers+lines', line: {color: '#ffffff', width: 10},
-      type: 'scatter3d', name:'d',
-      marker: {color: '#ff00ff', size: 10, symbol: 'circle'}
-    };
-    var abviz = { x: [ax, bx], y: [ay, by], z: [az, bz],
-      mode: 'lines', line: {color: '#000000', width: 10},
-      type: 'scatter3d', name: 'ab',
-    };
-    var acviz = { x: [ax, cx], y: [ay, cy], z: [az, cz],
-      mode: 'lines', line: {color: '#555555', width: 10},
-      type: 'scatter3d', name: 'ac',
-    };
-    var bcviz = { x: [bx, cx], y: [by, cy], z: [bz, cz],
-      mode: 'lines', line: {color: '#555555', width: 10},
-      type: 'scatter3d', name: 'bc',
-    };
-    var axes = getAxesEqual([a, b, c, d]);
-    var data = [aviz, bviz, cviz, dviz, abviz, acviz, bcviz, axes.x, axes.y, axes.z];
-    var layout = {
-      autosize: false, width: 500, height: 500,
-      margin: { l: 0, r: 0, b: 0, t: 65 }
-    };
-    Plotly.newPlot('angleVis', data, layout);    
 }
 </script>
 
