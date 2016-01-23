@@ -83,11 +83,11 @@ function getAboveOrBelow(a, b, c, d) {
     
     //create vector from point on plane to point d, arbitrarily A to D
     var ad = vec3.create(); //allocate a vector "ad"
-    vec3.subtract(u1, d, a); //calculate the vector from point a to point d (ad = d-a)
+    vec3.subtract(ad, d, a); //calculate the vector from point a to point d (ad = d-a)
     
     //calculate dot product between normal and vector ad
     var dp = vec3.dot(norm, ad); //calculate dot product of normal and ad
-    return dp;
+    
     //determine if d is above, below, or on plane ABC based on sign of the dot product
     if (dp===0){
     	return 0; // point is on the plane
