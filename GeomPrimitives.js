@@ -88,17 +88,16 @@ function getAboveOrBelow(a, b, c, d) {
     //calculate dot product between normal and vector ad
     var dp = vec3.dot(norm, ad); //calculate dot product of normal and ad
     
- 	return 9;
-    ////determine if d is above, below, or on plane ABC based on sign of the dot product
-    //if (dp==0){
-    //	return 0; // point is on the plane
-    //}
-    //else if (dp>0){
-    //	return 1; // point is on the same side as the normal vector
-    //}
-    //else{ // dp<0
-    //	return -1; // point is on the opposite side of the normal vector
-    //}
+    //determine if d is above, below, or on plane ABC based on sign of the dot product
+    if (dp==0){
+    	return 0; // point is on the plane
+    }
+    else if (dp>0){
+    	return 1; // point is on the same side as the normal vector
+    }
+    else{ // dp<0
+    	return -1; // point is on the opposite side of the normal vector
+    }
 
 }
 
