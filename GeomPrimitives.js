@@ -87,9 +87,9 @@ function getAboveOrBelow(a, b, c, d) {
     
     //calculate dot product between normal and vector ad
     var dp = vec3.dot(norm, ad); //calculate dot product of normal and ad
-    
+    return dp;
     //determine if d is above, below, or on plane ABC based on sign of the dot product
-    if (dp==0){
+    if (dp===0){
     	return 0; // point is on the plane
     }
     else if (dp>0){
