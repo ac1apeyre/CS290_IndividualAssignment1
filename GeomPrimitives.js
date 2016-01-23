@@ -40,7 +40,7 @@ function getAngle(a, b, c) {
     var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
     var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
     var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
-    var theta = Math.acos(quotient); //return the inverse cosine of theta
+    var theta = Math.acos(quotient); //calculate the inverse cosine to get angle
     return theta;
 }
 
@@ -50,8 +50,18 @@ function getAngle(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: area (float)
 function getTriangleArea(a, b, c) {
-    //TODO: Fill this in for task 2
-    return 0; //This is a dummy value for now.  Replace with true area
+    //create vectors from the given points
+    //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
+    var v1 = vec3.create(); //allocate a vector "v1" (ab)
+    var v2 = vec3.create(); //allocate a vector "v2" (ac)
+    vec3.subtract(v1, b, a); //calculate the vector from point a to point b (ab = b-a)
+    vec3.subtract(v2, c, a); //calculate the vector from point a to point c (ac = c-a)
+    
+    //area = 0.5 * |v1 x v2|
+    var cp = vec3.create(); //allocate a vector "cp" for the cross product of v1 and v2
+    vec3.cross(cp, v1, v2); //calculate cross product
+    var area = 0.5*vec3.len(cp) //calculate area by halving the magnitude of the cp vector (area of parallelogram formed by v1 and v2)
+    return area; 
 }
 
 //Purpose: For a plane determined by the points a, b, and c, with the plane
