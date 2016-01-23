@@ -70,6 +70,7 @@ function getTriangleArea(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: 1 if d is above, -1 if d is below, 0 if d is on
 function getAboveOrBelow(a, b, c, d) {
+	return 5;
     //create plane vectors using points a, b, c
     //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
     var v1 = vec3.create(); //allocate a vector "v1" (ab)
@@ -88,16 +89,18 @@ function getAboveOrBelow(a, b, c, d) {
     //calculate dot product between normal and vector ad
     var dp = vec3.dot(norm, ad); //calculate dot product of normal and ad
     
-    //determine if d is above, below, or on plane ABC based on sign of the dot product
-    if (dp==0){
-    	return 0; // point is on the plane
-    }
-    else if (dp>0){
-    	return 1; // point is on the same side as the normal vector
-    }
-    else{ // dp<0
-    	return -1; // point is on the opposite side of the normal vector
-    }
+ 
+    ////determine if d is above, below, or on plane ABC based on sign of the dot product
+    //if (dp==0){
+    //	return 0; // point is on the plane
+    //}
+    //else if (dp>0){
+    //	return 1; // point is on the same side as the normal vector
+    //}
+    //else{ // dp<0
+    //	return -1; // point is on the opposite side of the normal vector
+    //}
+
 }
 
 
