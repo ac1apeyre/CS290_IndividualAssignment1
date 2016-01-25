@@ -129,8 +129,8 @@ function getLineSegmentIntersection(a, b, c, d) {
     }
     
     // 3. Calculate numerator of s and t
-    var snumerator = (-(dy-cy)*(cx-ax)) + ((dx-cx)*(cy-ay));
-    var tnumerator = ((bx-ax)*(cy-ay))  - ((by-ay)*(cx-ax));
+    var snumerator = (-(d[1]-c[1])*(c[0]-a[0])) + ((d[0]-c[0])*(c[1]-a[1]));
+    var tnumerator = ((b[0]-a[0])*(c[1]-a[1]))  - ((b[1]-a[1])*(c[0]-a[0]));
     
     // 4. Find s and t
     var s = snumerator/denominator;
@@ -150,10 +150,11 @@ function getLineSegmentIntersection(a, b, c, d) {
         else{
             return null; //Z-coordinates do not match
         }
-        
         //End 3D implementation
         
-        return vec3.fromValues(ix, iy, iz); //return segment intersection
+        intersection = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
+        
+        return intersection; //return segment intersection
     }
     else{
         return null; // lines intersect but not the segments
