@@ -44,9 +44,7 @@ function getAngle(a, b, c) {
     return theta;
 }
 
-
-//Purpose: Given three 3D vertices a, b, and c, compute the area of the triangle
-//spanned by them
+//Purpose: Given three 3D vertices a, b, and c, compute the area of the triangle spanned by them
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: area (float)
 function getTriangleArea(a, b, c) {
@@ -101,16 +99,66 @@ function getAboveOrBelow(a, b, c, d) {
 
 }
 
-
 //Purpose: Given a line segment ab and a line segment cd, compute the intersection
 //If they don't intersect, return null
 //Inputs: a (vec3), b (vec3), c (vec3), d (vec3)
 //Returns: intersection (vec3) or null if no intersection
 function getLineSegmentIntersection(a, b, c, d) {
-    //TODO: Fill this in for task 4
-    return null; //This is a dummy for now.  Fill in with the vec3 
-    //representing the intersection if it exists.  Only return null if 
-    //no intersection interior to both segments
+    //2D implementation
+    
+    //access x: vector[0]
+    //access y: vector[1]
+    //access z: vector[2]   (3D)
+    
+    // System of Equations:
+    // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax  
+    // ay+s*uy=cy+t*vy   -->  s*uy - t*vy = cy-ay  
+    // az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az   (3D)
+    
+    // Solve X and Y equations using Cramer's rule
+    // s = {-vy(cx-ax) + vx(cy-ay)} / {-ux*vy + vx*uy}    
+    // t = {ux(cy-ay)  - uy(cx-ax)} / {-ux*vy + vx*uy}    
+    // where ux = bx-ax, uy = by-ay, vx = dx-cx, vy = dy-cy
+    
+    // 1. Calculate denominator of s and t
+    var denominator = (-(b[0]-a[0])*(d[1]-c[1])) + ((d[0]-c[0])*(b[1]-a[1]));
+    
+    // 2. Check if denominator is 0 (if YES- return NULL, the segments are parallel or on the same line)
+    if (denominator===0){
+        return null;
+    }
+    
+    // 3. Calculate numerator of s and t
+    var snumerator = (-(dy-cy)*(cx-ax)) + ((dx-cx)*(cy-ay));
+    var tnumerator = ((bx-ax)*(cy-ay))  - ((by-ay)*(cx-ax));
+    
+    // 4. Find s and t
+    var s = snumerator/denominator;
+    var t = tnumerator/denominator;
+    
+    // 5. Check to see if 0<=s<=1 and 0<=t<=1
+    if (s>=0 && s<=1 && t>=0 && t<=1){ //segment intersects
+        var intersection = vec3.create(); //create a vec3 to hold intersection point;
+        var ix = a[0]+s*(b[0]-a[0]); //calculate x
+        var iy = a[1]+s*(b[1]-a[1]); //calculate y
+        var iz = 0; //iz=0 in 2D
+        
+        //3D implementation: plug solution from 2D into Z equation
+        if ((a[2]+s*(b[2]-a[2])) === (c[2]+t*(d[2]-c[2]))){
+            iz = a[2]+s*(b[2]-a[2]);
+        }
+        else{
+            return null; //Z-coordinates do not match
+        }
+        
+        //End 3D implementation
+        
+        return vec3.fromValues(ix, iy, iz); //return segment intersection
+    }
+    else{
+        return null; // lines intersect but not the segments
+    }
+
 }
 
 //Purpose: Given three points on a triangle abc, compute the triangle circumcenter
