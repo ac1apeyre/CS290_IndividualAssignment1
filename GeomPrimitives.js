@@ -104,7 +104,7 @@ function getAboveOrBelow(a, b, c, d) {
 //Inputs: a (vec3), b (vec3), c (vec3), d (vec3)
 //Returns: intersection (vec3) or null if no intersection
 function getLineSegmentIntersection(a, b, c, d) {
-    //2D implementation
+    //2D and 3D implementations-- comment out lines 147-152 for 2D only
     
     //access x: vector[0]
     //access y: vector[1]
@@ -159,7 +159,6 @@ function getLineSegmentIntersection(a, b, c, d) {
     else{
         return null; // lines intersect but not the segments
     }
-
 }
 
 //Purpose: Given three points on a triangle abc, compute the triangle circumcenter
