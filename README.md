@@ -11,7 +11,7 @@ Athenais Clemence Lapeyre (acl26)
 
 --Time spent on assignment--
 Part 1: 4 hours (this includes learning git, coding, and running through test cases)
-Part 2: tbd
+Part 2: 1.5 hrs + task 5 & EC
 
 --Feedback--
       This assignment was a nice way to ease into javascript. Sample test cases would be much appreciated for future assignments and/or        the equivalent of j-unit tests. Could we also be pointed to a resource for how to use the in-browser debugger (F12)?
