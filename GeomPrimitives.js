@@ -188,14 +188,14 @@ function getTriangleCircumcenter(a, b, c) {
     // find the vector that passes through midpoint of AB (perpendicular bisector of AB)
     var mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2);
     var pAB = vec3.create(); //allocate a vector for the perpendicular bisector 
-    vec3.add(pAB, mAB, cross_AB); 
+    vec3.add(pAB, mAB, crossAB); 
     var uPAB = vec3.create();
     vec3.normalize(uPAB, pAB); // normalize perpendicular bisector of AB
      
     // find the vector that passes through midpoint of AC (perpendicular bisector of AC)
     var mAC = vec3.fromValues((a[0]+c[0])/2, (a[1]+c[1])/2, (a[2]+c[2])/2);
     var pAC = vec3.create(); //allocate a vector for the perpendicular bisector
-    vec3.add(pAC, mAC, cross_AC); 
+    vec3.add(pAC, mAC, crossAC); 
     var uPAC = vec3.create();
     vec3.normalize(uPAC, pAC); // normalize perpendicular bisector of AC
     
