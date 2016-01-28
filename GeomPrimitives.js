@@ -178,26 +178,26 @@ function getTriangleCircumcenter(a, b, c) {
     vec3.cross(norm, u1, u2); //calculate norm using cross product
    
     // cross normal with AB
-    var cross_AB = vec3.create();
-    vec3.cross(cross_AB, norm, u1);
+    var crossAB = vec3.create();
+    vec3.cross(crossAB, norm, u1);
     
     // cross normal with AC
-    var cross_AC = vec3.create();
-    vec3.cross(cross_AC, norm, u2);
+    var crossAC = vec3.create();
+    vec3.cross(crossAC, norm, u2);
     
     // find the vector that passes through midpoint of AB (perpendicular bisector of AB)
-    var mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2);//
-    var PAB = vec3.create(); //allocate a vector for the perpendicular bisector 
-    vec3.add(PAB, mAB, cross_AB); 
+    var mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2);
+    var pAB = vec3.create(); //allocate a vector for the perpendicular bisector 
+    vec3.add(pAB, mAB, cross_AB); 
     var uPAB = vec3.create();
-    vec3.normalize(uPAB, PAB); // normalize perpendicular bisector of AB
+    vec3.normalize(uPAB, pAB); // normalize perpendicular bisector of AB
      
     // find the vector that passes through midpoint of AC (perpendicular bisector of AC)
     var mAC = vec3.fromValues((a[0]+c[0])/2, (a[1]+c[1])/2, (a[2]+c[2])/2);
-    var PAC = vec3.create(); //allocate a vector for the perpendicular bisector
-    vec3.add(PAC, mAC, cross_AC); 
+    var pAC = vec3.create(); //allocate a vector for the perpendicular bisector
+    vec3.add(pAC, mAC, cross_AC); 
     var uPAC = vec3.create();
-    vec3.normalize(uPAC, PAC); // normalize perpendicular bisector of AC
+    vec3.normalize(uPAC, pAC); // normalize perpendicular bisector of AC
     
     // find where uPAB and uPAC intersect
     //access x: vector[0]
@@ -240,7 +240,7 @@ function getTriangleCircumcenter(a, b, c) {
     vec3.subtract(r, mAB, cc);
     var rad = vec3.length(r);
     
-    return {Circumcenter:mAB, Radius:rad};  //This is a dummy
+    return {Circumcenter:crossAB, Radius:rad};  //This is a dummy
     //for now that shows how to return a JSON object from a function.  Replace
     //vec3.fromValues(0, 0, 0) with the true circumcenter and 0.0 with the 
     //true radius
