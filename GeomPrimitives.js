@@ -205,7 +205,7 @@ function getTriangleCircumcenter(a, b, c) {
     //access z: vector[2]  
     
     // System of Equations:
-    // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax  
+    // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax 
     // ay+s*uy=cy+t*vy   -->  s*uy - t*vy = cy-ay  
     // az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az 
     
@@ -240,7 +240,7 @@ function getTriangleCircumcenter(a, b, c) {
     vec3.subtract(r, mAB, cc);
     var rad = vec3.length(r);
     
-    return {Circumcenter:cc, Radius:rad};  //This is a dummy
+    return {Circumcenter:mAB, Radius:rad};  //This is a dummy
     //for now that shows how to return a JSON object from a function.  Replace
     //vec3.fromValues(0, 0, 0) with the true circumcenter and 0.0 with the 
     //true radius
