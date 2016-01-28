@@ -216,25 +216,25 @@ function getTriangleCircumcenter(a, b, c) {
     // t = {ux(cy-ay)  - uy(cx-ax)} / {-ux*vy + vx*uy}    
     // where ux = bx-ax, uy = by-ay, vx = dx-cx, vy = dy-cy
     
-    // point A: uPAB
-    // point B: 0,0,0
-    // point C: aPAC
-    // point D: aPAC
+    // point A: mAB
+    // point B: uPAB
+    // point C: mAC
+    // point D: uPAC
     
     // 1. Calculate denominator of s and t
-    var denominator = (-(b[0]-a[0])*(d[1]-c[1])) + ((d[0]-c[0])*(b[1]-a[1]));
+    var denominator = (-(uPAB[0]-mAB[0])*(uPAC[1]-mAC[1])) + ((uPAC[0]-mAC[0])*(uPAB[1]-mAB[1]));
    
-    var snumerator = (-(d[1]-c[1])*(c[0]-a[0])) + ((d[0]-c[0])*(c[1]-a[1]));
-    var tnumerator = ((b[0]-a[0])*(c[1]-a[1]))  - ((b[1]-a[1])*(c[0]-a[0]));
+    var snumerator = (-(uPAC[1]-mAC[1])*(mAC[0]-mAB[0])) + ((uPAC[0]-mAC[0])*(mAC[1]-mAB[1]));
+    var tnumerator = ((uPAB[0]-mAB[0])*(mAC[1]-mAB[1]))  - ((uPAB[1]-mAB[1])*(mAC[0]-mAB[0]));
     
     // 4. Find s and t
     var s = snumerator/denominator;
     var t = tnumerator/denominator;
    
-    var c = vec3.create(); //create a vec3 to hold circumcenter;
-    var ix = a[0]+s*(b[0]-a[0]); //calculate x
-    var iy = a[1]+s*(b[1]-a[1]); //calculate y
-    var iz = a[2]+s*(b[2]-a[2]); // calculate z
+    var cc = vec3.create(); //create a vec3 to hold circumcenter;
+    var ix = mAB[0]+s*(uPAB[0]-mAB[0]); //calculate x
+    var iy = mAB[1]+s*(uPAB[1]-mAB[1]); //calculate y
+    var iz = mAB[2]+s*(uPAB[2]-mAB[2]); // calculate z
     cc = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
         
     // find length of vector CC to mAB (radius of circumcircle)
@@ -242,7 +242,7 @@ function getTriangleCircumcenter(a, b, c) {
     vec3.subtract(r, mAB, cc);
     var rad = vec3.length(r);
     
-    return {Circumcenter:vec3.fromValues(ix, iy, iz), Radius:rad};  //This is a dummy
+    return {Circumcenter:cc, Radius:rad};  //This is a dummy
     //for now that shows how to return a JSON object from a function.  Replace
     //vec3.fromValues(0, 0, 0) with the true circumcenter and 0.0 with the 
     //true radius
