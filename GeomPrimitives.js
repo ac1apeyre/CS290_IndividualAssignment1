@@ -188,23 +188,61 @@ function getTriangleCircumcenter(a, b, c) {
     // find the vector that passes through midpoint of AB (perpendicular bisector of AB)
     var mAB = vec3.create(); // midpoint of segment AB
     mAB.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2);
-    var PAB = vec3.create(); //allocate a vector 
-    ***
+    var PAB = vec3.create(); //allocate a vector for the perpendicular bisector 
+    vec3.add(PAB, mAB, cross_AB); 
     var uPAB = vec3.create();
     vec3.normalize(uPAB, PAB); // normalize perpendicular bisector of AB
     
     // find the vector that passes through midpoint of AC (perpendicular bisector of AC)
     var mAC = vec3.create(); // midpoint of segment AB
     mAC.fromValues((a[0]+c[0])/2, (a[1]+c[1])/2, (a[2]+c[2])/2);
-    var PAC = vec3.create(); //allocate a vector 
-    ***
+    var PAC = vec3.create(); //allocate a vector for the perpendicular bisector
+    vec3.add(PAC, mAC, cross_AC); 
     var uPAC = vec3.create();
     vec3.normalize(uPAC, PAC); // normalize perpendicular bisector of AC
     
     // find where uPAB and uPAC intersect
-   
+    //access x: vector[0]
+    //access y: vector[1]
+    //access z: vector[2]  
     
-    return {Circumcenter:vec3.fromValues(0, 0, 0), Radius:0.0};  //This is a dummy
+    // System of Equations:
+    // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax  
+    // ay+s*uy=cy+t*vy   -->  s*uy - t*vy = cy-ay  
+    // az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az 
+    
+    // Solve X and Y equations using Cramer's rule
+    // s = {-vy(cx-ax) + vx(cy-ay)} / {-ux*vy + vx*uy}    
+    // t = {ux(cy-ay)  - uy(cx-ax)} / {-ux*vy + vx*uy}    
+    // where ux = bx-ax, uy = by-ay, vx = dx-cx, vy = dy-cy
+    
+    // point A: uPAB
+    // point B: 0,0,0
+    // point C: aPAC
+    // point D: aPAC
+    
+    // 1. Calculate denominator of s and t
+    var denominator = (-(b[0]-a[0])*(d[1]-c[1])) + ((d[0]-c[0])*(b[1]-a[1]));
+   
+    var snumerator = (-(d[1]-c[1])*(c[0]-a[0])) + ((d[0]-c[0])*(c[1]-a[1]));
+    var tnumerator = ((b[0]-a[0])*(c[1]-a[1]))  - ((b[1]-a[1])*(c[0]-a[0]));
+    
+    // 4. Find s and t
+    var s = snumerator/denominator;
+    var t = tnumerator/denominator;
+   
+    var c = vec3.create(); //create a vec3 to hold circumcenter;
+    var ix = a[0]+s*(b[0]-a[0]); //calculate x
+    var iy = a[1]+s*(b[1]-a[1]); //calculate y
+    var iz = a[2]+s*(b[2]-a[2]); // calculate z
+    cc = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
+        
+    // find length of vector CC to mAB (radius of circumcircle)
+    var r = vec3.create();
+    vec3.subtract(r, mAB, cc);
+    var rad = vec3.length(r);
+    
+    return {Circumcenter:vec3.fromValues(ix, iy, iz), Radius:rad};  //This is a dummy
     //for now that shows how to return a JSON object from a function.  Replace
     //vec3.fromValues(0, 0, 0) with the true circumcenter and 0.0 with the 
     //true radius
