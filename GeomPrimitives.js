@@ -167,43 +167,42 @@ function getLineSegmentIntersection(a, b, c, d) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: On object of the form {circumcenter: vec3, R: float (radius)}
 function getTriangleCircumcenter(a, b, c) {
-    //2D
-    // Calculate perpendicular bisectors of AB and AC
-    // AB
-    var mAB = var3.create(); // create a vector for the midpoint of segment AB
-    mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2); // apply midpoint formula
-    var dX = b[0]-a[0];
-    var dY = b[1]-a[1];
-    var P1 = vec3.create(); // point on perpendicular bisector other than mAB
-    if (dY==0){ // perpendicular bisector is vertical
-    	P1 = fromValues(mAB[0], mAB[1]+1, mAB[2]; //same x as midpoint, 1 above y-midpoint, same z
-    }
-    else{ // y = slope*x + b
-    	var slope = -dX/dY; // slope of perpendicular is -dX/dY
-    	var b = mAB[1]-slope*mAB[0]; // use midpoint to find y-intercept
-    	P1 = fromValues(mAB[0]+1, slope*(mAB[0]+1)+b, mAB[2]);
-    }
-    var PB_ab = vec3.create(); // create vector to represent the perpendicular bisector of AB
-    sub(PB_ab, mAB, P1);
+    // Calculate perpendicular bisectors of AB and AC in 3D
     
-    // AC
-    var mAC = var3.create(); // create a vector for the midpoint of segment AC
-    mAC = vec3.fromValues((a[0]+c[0])/2, (a[1]+c[1])/2, (a[2]+c[2])/2); // apply midpoint formula
-    var dX2 = c[0]-a[0];
-    var dY2 = c[1]-a[1];
-    var P2 = vec3.create(); // point on perpendicular bisector other than mAC
-    if (dY2==0){ // perpendicular bisector is vertical
-    	P2 = fromValues(mAC[0], mAC[1]+1, mAC[2]; //same x as midpoint, 1 above y-midpoint, same z
-    }
-    else{ // y = slope*x + b
-    	var slope2 = -dX2/dY2; // slope of perpendicular is -dX/dY
-    	var b2 = mAC[1]-slope*mAC[0]; // use midpoint to find y-intercept
-    	P2 = fromValues(mAC[0]+1, slope2*(mAC[0]+1)+b2, mAC[2]); 
-    }
-    var PB_ac = vec3.create(); // create vector to represent the perpendicular bisector of AC
-    sub(PB_ac, mAC, P2);
+    // find normal to the plane
+    var u1 = vec3.create(); //allocate a vector "u1" (ab)
+    var u2 = vec3.create(); //allocate a vector "u2" (ac)
+    vec3.subtract(u1, b, a); //calculate the vector from point a to point b (ab = b-a)
+    vec3.subtract(u2, c, a); //calculate the vector from point a to point c (ac = c-a)
+    var norm = vec3.create(); //allocate a vector for the plane normal
+    vec3.cross(norm, u1, u2); //calculate norm using cross product
+   
+    // cross normal with AB
+    var cross_AB = vec3.create();
+    vec3.cross(cross_AB, norm, u1);
     
+    // cross normal with AC
+    var cross_AC = vec3.create();
+    vec3.cross(cross_AC, norm, u2);
     
+    // find the vector that passes through midpoint of AB (perpendicular bisector of AB)
+    var mAB = vec3.create(); // midpoint of segment AB
+    mAB.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2);
+    var PAB = vec3.create(); //allocate a vector 
+    ***
+    var uPAB = vec3.create();
+    vec3.normalize(uPAB, PAB); // normalize perpendicular bisector of AB
+    
+    // find the vector that passes through midpoint of AC (perpendicular bisector of AC)
+    var mAC = vec3.create(); // midpoint of segment AB
+    mAC.fromValues((a[0]+c[0])/2, (a[1]+c[1])/2, (a[2]+c[2])/2);
+    var PAC = vec3.create(); //allocate a vector 
+    ***
+    var uPAC = vec3.create();
+    vec3.normalize(uPAC, PAC); // normalize perpendicular bisector of AC
+    
+    // find where uPAB and uPAC intersect
+   
     
     return {Circumcenter:vec3.fromValues(0, 0, 0), Radius:0.0};  //This is a dummy
     //for now that shows how to return a JSON object from a function.  Replace
