@@ -167,7 +167,21 @@ function getLineSegmentIntersection(a, b, c, d) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: On object of the form {circumcenter: vec3, R: float (radius)}
 function getTriangleCircumcenter(a, b, c) {
-    //TODO: Fill this in for task 5
+    //2D
+    // Calculate perpendicular bisectors of AB and AC
+    // AB
+    var mAB = var3.create(); // create a vector for the midpoint of segment AB
+    mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2); // apply midpoint formula
+    var dX = b[0]-a[0];
+    var dY = b[1]-a[1];
+    if (dY==0){ // perpendicular bisector is horizontal
+    	
+    }
+    else{
+    	var slope = -dX/dY;
+    }
+    
+    // AC
     return {Circumcenter:vec3.fromValues(0, 0, 0), Radius:0.0};  //This is a dummy
     //for now that shows how to return a JSON object from a function.  Replace
     //vec3.fromValues(0, 0, 0) with the true circumcenter and 0.0 with the 
