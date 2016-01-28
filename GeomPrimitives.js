@@ -186,23 +186,18 @@ function getTriangleCircumcenter(a, b, c) {
     vec3.cross(crossAC, norm, u2);
     
     // find the vector that passes through midpoint of AB (perpendicular bisector of AB)
-    var mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2);
+    var mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2); // midpoint of AB
     var pAB = vec3.create(); //allocate a vector for the perpendicular bisector 
     vec3.add(pAB, mAB, crossAB); 
-    var uPAB = vec3.create();
-    vec3.normalize(uPAB, pAB); // normalize perpendicular bisector of AB
+    //var uPAB = vec3.create();
+    //vec3.normalize(uPAB, pAB); // normalize perpendicular bisector of AB
      
     // find the vector that passes through midpoint of AC (perpendicular bisector of AC)
     var mAC = vec3.fromValues((a[0]+c[0])/2, (a[1]+c[1])/2, (a[2]+c[2])/2);
     var pAC = vec3.create(); //allocate a vector for the perpendicular bisector
     vec3.add(pAC, mAC, crossAC); 
-    var uPAC = vec3.create();
-    vec3.normalize(uPAC, pAC); // normalize perpendicular bisector of AC
-    
-    // find where uPAB and uPAC intersect
-    //access x: vector[0]
-    //access y: vector[1]
-    //access z: vector[2]  
+    //var uPAC = vec3.create();
+    //vec3.normalize(uPAC, pAC); // normalize perpendicular bisector of AC
     
     // System of Equations:
     // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax 
@@ -215,24 +210,24 @@ function getTriangleCircumcenter(a, b, c) {
     // where ux = bx-ax, uy = by-ay, vx = dx-cx, vy = dy-cy
     
     // point A: mAB
-    // point B: uPAB
+    // point B: pAB
     // point C: mAC
-    // point D: uPAC
+    // point D: pAC
     
     // 1. Calculate denominator of s and t
-    var denominator = (-(uPAB[0]-mAB[0])*(uPAC[1]-mAC[1])) + ((uPAC[0]-mAC[0])*(uPAB[1]-mAB[1]));
+    var denominator = (-(pAB[0]-mAB[0])*(pAC[1]-mAC[1])) + ((pAC[0]-mAC[0])*(pAB[1]-mAB[1]));
    
-    var snumerator = (-(uPAC[1]-mAC[1])*(mAC[0]-mAB[0])) + ((uPAC[0]-mAC[0])*(mAC[1]-mAB[1]));
-    var tnumerator = ((uPAB[0]-mAB[0])*(mAC[1]-mAB[1]))  - ((uPAB[1]-mAB[1])*(mAC[0]-mAB[0]));
+    var snumerator = (-(pAC[1]-mAC[1])*(mAC[0]-mAB[0])) + ((pAC[0]-mAC[0])*(mAC[1]-mAB[1]));
+    var tnumerator = ((pAB[0]-mAB[0])*(mAC[1]-mAB[1]))  - ((pAB[1]-mAB[1])*(mAC[0]-mAB[0]));
     
     // 4. Find s and t
     var s = snumerator/denominator;
     var t = tnumerator/denominator;
    
     var cc = vec3.create(); //create a vec3 to hold circumcenter;
-    var ix = mAB[0]+s*(uPAB[0]-mAB[0]); //calculate x
-    var iy = mAB[1]+s*(uPAB[1]-mAB[1]); //calculate y
-    var iz = mAB[2]+s*(uPAB[2]-mAB[2]); // calculate z
+    var ix = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
+    var iy = mAB[1]+s*(pAB[1]-mAB[1]); //calculate y
+    var iz = mAB[2]+s*(pAB[2]-mAB[2]); // calculate z
     cc = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
         
     // find length of vector CC to mAB (radius of circumcircle)
