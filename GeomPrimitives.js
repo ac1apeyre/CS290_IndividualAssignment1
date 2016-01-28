@@ -295,3 +295,4 @@ function getMousePos(canvas, evt) {
 	};
 }
 
+ 
