@@ -235,7 +235,7 @@ function getTriangleCircumcenter(a, b, c) {
     vec3.subtract(r, mAB, cc);
     var rad = vec3.length(r);
     
-    return {Circumcenter:crossAB, Radius:rad};  //This is a dummy
+    return {Circumcenter:cc, Radius:rad};  //This is a dummy
     //for now that shows how to return a JSON object from a function.  Replace
     //vec3.fromValues(0, 0, 0) with the true circumcenter and 0.0 with the 
     //true radius
