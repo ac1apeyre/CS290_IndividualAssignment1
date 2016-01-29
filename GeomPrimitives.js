@@ -298,9 +298,9 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     var s2 = snumerator2/denominator2;
     var t2 = tnumerator2/denominator2;
     var cc2 = vec3.create(); //create a vec3 to hold circumcenter;
-    var ix2 = mBC[0]+s*(pBC[0]-mBC[0]); //calculate x
-    var iy2 = mBC[1]+s*(pBC[1]-mBC[1]); //calculate y
-    var iz2 = mBC[2]+s*(pBC[2]-mBC[2]); // calculate z
+    var ix2 = mBC[0]+s2*(pBC[0]-mBC[0]); //calculate x
+    var iy2 = mBC[1]+s2*(pBC[1]-mBC[1]); //calculate y
+    var iz2 = mBC[2]+s2*(pBC[2]-mBC[2]); // calculate z
     cc2 = vec3.fromValues(ix2, iy2, iz2); //circumcenter of plane bcd
     
     // 2. Find lines perpendicular to the planes that also go through these circumcenters
@@ -327,7 +327,10 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     var rCS = vec3.length(vr);
     
    
-    return {Circumcenter:ccT, Radius:rCS};
+    //return {Circumcenter:ccT, Radius:rCS};
+    
+    //testing purposes
+    return {CircumcenterABC:cc1, CircumcenterBCD:cc2 , CircumcenterT: ccT, Radius:rCS};
 }
 
 ///////////////////////////////////////////////////////////////////
