@@ -134,10 +134,10 @@ function getLineSegmentIntersection(a, b, c, d) {
 		var denominatorXZ = (-(b[0]-a[0])*(d[2]-c[2])) + ((d[0]-c[0])*(b[2]-a[2]));
 		
 		if (denominatorXY==0){ // Use XZ
-			var snumerator = (-(d[2]-c[2])*(c[0]-a[0])) + ((d[0]-c[0])*(c[2]-a[2]));
+		    var snumerator = (-(d[2]-c[2])*(c[0]-a[0])) + ((d[0]-c[0])*(c[2]-a[2]));
 		    var tnumerator = ((b[0]-a[0])*(c[2]-a[2]))  - ((b[2]-a[2])*(c[0]-a[0]));
-		    var s = snumerator/denominator;
-		    var t = tnumerator/denominator;
+		    var s = snumerator/denominatorXZ;
+		    var t = tnumerator/denominatorXZ;
 		    if (s>=0 && s<=1 && t>=0 && t<=1){ //segment intersects
 		        var intersection = vec3.create(); //create a vec3 to hold intersection point;
 		        var ix = a[0]+s*(b[0]-a[0]); //calculate x
@@ -153,8 +153,8 @@ function getLineSegmentIntersection(a, b, c, d) {
 		else{ // Use XY
 		    var snumerator = (-(d[1]-c[1])*(c[0]-a[0])) + ((d[0]-c[0])*(c[1]-a[1]));
 		    var tnumerator = ((b[0]-a[0])*(c[1]-a[1]))  - ((b[1]-a[1])*(c[0]-a[0]));
-		    var s = snumerator/denominator;
-		    var t = tnumerator/denominator;
+		    var s = snumerator/denominatorXY;
+		    var t = tnumerator/denominatorXY;
 		    if (s>=0 && s<=1 && t>=0 && t<=1){ //segment intersects
 		        var intersection = vec3.create(); //create a vec3 to hold intersection point;
 		        var ix = a[0]+s*(b[0]-a[0]); //calculate x
