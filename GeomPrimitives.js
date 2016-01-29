@@ -277,8 +277,8 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     // circumcenter of bcd
     var v1 = vec3.create(); //allocate a vector "v1" (bc)
     var v2 = vec3.create(); //allocate a vector "v2" (cd)
-    vec3.subtract(u1, c, b); //calculate the vector from point b to point c 
-    vec3.subtract(u2, d, c); //calculate the vector from point c to point d
+    vec3.subtract(v1, c, b); //calculate the vector from point b to point c 
+    vec3.subtract(v2, d, c); //calculate the vector from point c to point d
     var normBCD = vec3.create(); //allocate a vector for the plane normal
     vec3.cross(normBCD, v1, v2); //calculate normal to the plane using cross product
     var crossBC = vec3.create(); 
