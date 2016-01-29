@@ -321,7 +321,7 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     //return {Circumcenter:ccT, Radius:rCS};
     
     //testing purposes
-    return {CircumcenterABC:pCC1, CircumcenterBCD:pCC2 , CircumcenterT: ccT, Radius:69};
+    return {CircumcenterABC:cc1, CircumcenterBCD:cc2 , CircumcenterT: ccT, Radius:69};
 }
 
 ///////////////////////////////////////////////////////////////////
