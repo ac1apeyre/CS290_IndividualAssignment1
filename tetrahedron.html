@@ -42,6 +42,8 @@
 <td><input type="text" id = "dz_2" size="3"></input></td>
 <td><h1>)</h1></td>
 </tr>
+<tr><td align = "right"><font color = "#000000"><b>Circumcenter</b></font></td><td><div id="Circumcenter"></div></td></tr>
+<tr><td align = "right">Radius</td><td><div id="Radius"></div></td></tr>
 </table>
 </td>
 <td>
@@ -88,10 +90,17 @@ function callComputeAngle() {
     console.log("Computing circumcenter of tetrahedron with vertices " + vec3.str(a) + ", " + vec3.str(b) + ", " + vec3.str(c) + ", and " + vec3.str(d);
     
     //Perform calculation
-    var circumCenter = getTetrahedronCircumsphere(a, b, c, d);
-    //Output result ??
-    document.getElementById("circumcenter").innerHTML = "(" + circumCenter[0].toFixed(1) + "," + circumCenter[1].toFixed(1) + "," +  circumCenter[2].toFixed(1) + ")";
-    }
+    var res = getTetrahedronCircumsphere(a, b, c, d);
+    Circumcenter = res.Circumcenter;
+    Radius = res.Radius;
+	    if (Circumcenter === null) {
+	        document.getElementById('Circumcenter').innerHTML = "null";
+	    }
+	    else {
+	        document.getElementById('Circumcenter').innerHTML = "(" + Circumcenter[0].toFixed(1) + "," + Circumcenter[1].toFixed(1) + "," + Circumcenter[2].toFixed(1) + ")";
+	    }
+	    document.getElementById('Radius').innerHTML = "" + Radius;
+}
 </script>
 
 
