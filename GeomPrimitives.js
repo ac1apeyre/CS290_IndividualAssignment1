@@ -244,7 +244,21 @@ function getTriangleCircumcenter(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3), d (vec3)
 //Returns: On object of the form {circumcenter: vec3, R: float (radius)}
 function getTetrahedronCircumsphere(a, b, c, d) {
-    //EXTRA CREDIT
+    // 1. Find circumcenters of 2 of the triangular planes-- arbitrarily abc and bcd -- same code as above
+    // circumcenter of abc
+    // circumcenter of bcd
+    
+    
+    
+    // 2. Find lines perpendicular to the planes that also go through these circumcenters
+    
+    
+    // 3. Find intersection point of these two lines
+    
+    
+    // 4. Find distance from intersection point to a,b,c, or d arbitrarily
+ 
+    
     return {Circumcenter:vec3.fromValues(0, 0, 0), Radius:0.0};
 }
 
