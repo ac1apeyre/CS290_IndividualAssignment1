@@ -276,9 +276,10 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     // circumcenter of bcd
     vec3.subtract(u1, c, b); //calculate the vector from point a to point b (ab = b-a)
     vec3.subtract(u2, d, b); //calculate the vector from point a to point c (ac = c-a)
-    vec3.cross(normABC, u1, u2); //calculate normal to the plane using cross product
-    vec3.cross(crossAB, normABC, u1); // cross normal with AB
-    vec3.cross(crossAC, normABC, u2); // cross normal with AC
+    var normBCD = vec3.create(); //allocate a vector for the plane normal
+    vec3.cross(normBCD, u1, u2); //calculate normal to the plane using cross product
+    vec3.cross(crossAB, normBCD, u1); // cross normal with AB
+    vec3.cross(crossAC, normBCD, u2); // cross normal with AC
     mAB = vec3.fromValues((b[0]+c[0])/2, (b[1]+c[1])/2, (b[2]+c[2])/2); // midpoint of AB
     vec3.add(pAB, mAB, crossAB); // find the vector that passes through midpoint of AB (perpendicular bisector of AB)
     mAC = vec3.fromValues((b[0]+d[0])/2, (b[1]+d[1])/2, (b[2]+d[2])/2); //midpoint of AC
@@ -294,34 +295,34 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     iz = mAB[2]+s*(pAB[2]-mAB[2]); // calculate z
     cc2 = vec3.fromValues(ix, iy, iz); // circumcenter of the plane ABC
     
-    //// 2. Find lines perpendicular to the planes that also go through these circumcenters
-    //var pCC1 = vec3.create(); //allocate a vector for the perpendicular bisector 
-    //vec3.add(pCC1, cc1, normABC); // find the vector that passes through cc1 perpendicular to plane ABC
-    //var pCC2 = vec3.create(); //allocate a vector for the perpendicular bisector
-    //vec3.add(pCC2, cc2, normBCD); // find the vector that passes through cc2 perpendicular to plane BCD
+    // 2. Find lines perpendicular to the planes that also go through these circumcenters
+    var pCC1 = vec3.create(); //allocate a vector for the perpendicular bisector 
+    vec3.add(pCC1, cc1, normABC); // find the vector that passes through cc1 perpendicular to plane ABC
+    var pCC2 = vec3.create(); //allocate a vector for the perpendicular bisector
+    vec3.add(pCC2, cc2, normBCD); // find the vector that passes through cc2 perpendicular to plane BCD
      
-    //// 3. Find intersection point of these two lines
-    //var denominatorT = (-(pCC1[0]-cc1[0])*(pCC2[1]-cc2[1])) + ((pCC2[0]-cc2[0])*(pCC1[1]-cc1[1]));
-    //var snumeratorT = (-(pCC2[1]-cc2[1])*(cc2[0]-cc1[0])) + ((pCC2[0]-cc2[0])*(cc2[1]-cc1[1]));
-    //var numeratorT = ((pCC1[0]-cc1[0])*(cc2[1]-cc1[1]))  - ((pCC1[1]-cc1[1])*(cc2[0]-cc1[0]));
-    //var sT = snumeratorT/denominatorT;
-    //var tT = numeratorT/denominatorT;
-    //var ccT = vec3.create(); //create a vec3 to hold circumcenter;
-    //var ixT = cc1[0]+sT*(pCC1[0]-cc1[0]); //calculate x
-    //var iyT = cc1[1]+sT*(pCC1[1]-cc1[1]); //calculate y
-    //var izT = cc1[2]+sT*(pCC1[2]-cc1[2]); // calculate z
-    //ccT = vec3.fromValues(ixT, iyT, izT); // circumcenter of the tetrahedron
+    // 3. Find intersection point of these two lines
+    var denominatorT = (-(pCC1[0]-cc1[0])*(pCC2[1]-cc2[1])) + ((pCC2[0]-cc2[0])*(pCC1[1]-cc1[1]));
+    var snumeratorT = (-(pCC2[1]-cc2[1])*(cc2[0]-cc1[0])) + ((pCC2[0]-cc2[0])*(cc2[1]-cc1[1]));
+    var numeratorT = ((pCC1[0]-cc1[0])*(cc2[1]-cc1[1]))  - ((pCC1[1]-cc1[1])*(cc2[0]-cc1[0]));
+    var sT = snumeratorT/denominatorT;
+    var tT = numeratorT/denominatorT;
+    var ccT = vec3.create(); //create a vec3 to hold circumcenter;
+    var ixT = cc1[0]+sT*(pCC1[0]-cc1[0]); //calculate x
+    var iyT = cc1[1]+sT*(pCC1[1]-cc1[1]); //calculate y
+    var izT = cc1[2]+sT*(pCC1[2]-cc1[2]); // calculate z
+    ccT = vec3.fromValues(ixT, iyT, izT); // circumcenter of the tetrahedron
     
     //// 4. Find radius of the circumsphere (distance from circumcenter of tetrahedron to a, b, c, or d)
-    //var vr = vec3.create();
-    //vec3.subtract(vr, a, ccT);
-    //var rCS = vec3.length(vr);
+    var vr = vec3.create();
+    vec3.subtract(vr, a, ccT);
+    var rCS = vec3.length(vr);
     
    
     //return {Circumcenter:ccT, Radius:rCS};
     
     //testing purposes
-    return {CircumcenterABC:cc1, CircumcenterBCD:cc2 , CircumcenterT: vec3.fromValues(0,0,0), Radius:0.00};
+    return {CircumcenterABC:cc1, CircumcenterBCD:cc2 , CircumcenterT: ccT, Radius:rCS};
 }
 
 ///////////////////////////////////////////////////////////////////
