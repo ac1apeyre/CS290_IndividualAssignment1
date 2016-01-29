@@ -210,35 +210,43 @@ function getTriangleCircumcenter(a, b, c) {
     //var uPAC = vec3.create();
     //vec3.normalize(uPAC, pAC); // normalize perpendicular bisector of AC
     
+
     // System of Equations:
-    // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax 
+    // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax  
     // ay+s*uy=cy+t*vy   -->  s*uy - t*vy = cy-ay  
-    // az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az 
-    
-    // Solve X and Y equations using Cramer's rule
+    // az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az   
+    	
+    // Cramer's rule applied to 2 equations:
     // s = {-vy(cx-ax) + vx(cy-ay)} / {-ux*vy + vx*uy}    
     // t = {ux(cy-ay)  - uy(cx-ax)} / {-ux*vy + vx*uy}    
     // where ux = bx-ax, uy = by-ay, vx = dx-cx, vy = dy-cy
     
-    // point A: mAB
-    // point B: pAB
-    // point C: mAC
-    // point D: pAC
-    
-    // 1. Calculate denominator of s and t
-    var denominator = (-(pAB[0]-mAB[0])*(pAC[1]-mAC[1])) + ((pAC[0]-mAC[0])*(pAB[1]-mAB[1]));
+    // determine which two of the equations are redundant by calculating the denominators for two sets	
+	var denominatorXY = (-(pAB[0]-mAB[0])*(pAC[1]-mAC[1])) + ((pAC[0]-mAC[0])*(pAB[1]-mAB[1]));
+	var denominatorXZ = (-(pAB[0]-mAB[0])*(pAC[2]-mAC[2])) + ((pAC[0]-mAC[0])*(pAB[2]-mAB[2]));
+		
+	if (denominatorXY==0){ // Use XZ
+		var snumerator = (-(pAC[2]-mAC[2])*(mAC[0]-mAB[0])) + ((pAC[0]-mAC[0])*(mAC[2]-mAB[2]));
+		var tnumerator = ((pAB[0]-mAB[0])*(mAC[2]-mAB[2]))  - ((pAB[2]-mAB[2])*(mAC[0]-mAB[0]));
+	    var s = snumerator/denominatorXZ;
+	    var t = tnumerator/denominatorXZ;
+	    var ix = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
+        var iy = mAB[1]+s*(pAB[1]-mAB[1]); //calculate y
+        var iz = mAB[2]+s*(pAB[2]-mAB[2]); //calculate z
+
+	}    
+		else{ // Use XY
+			var snumerator = (-(pAC[1]-mAC[1])*(mAC[0]-mAB[0])) + ((pAC[0]-mAC[0])*(mAC[1]-mAB[1]));
+		    var tnumerator = ((pAB[0]-mAB[0])*(mAC[1]-mAB[1]))  - ((pAB[1]-mAB[1])*(mAC[0]-mAB[0]));
+		    var s = snumerator/denominatorXY;
+		    var t = tnumerator/denominatorXY;
+		    var ix = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
+        	var iy = mAB[1]+s*(pAB[1]-mAB[1]); //calculate y
+        	var iz = mAB[2]+s*(pAB[2]-mAB[2]); //calculate z
+		}
+
+    }
    
-    var snumerator = (-(pAC[1]-mAC[1])*(mAC[0]-mAB[0])) + ((pAC[0]-mAC[0])*(mAC[1]-mAB[1]));
-    var tnumerator = ((pAB[0]-mAB[0])*(mAC[1]-mAB[1]))  - ((pAB[1]-mAB[1])*(mAC[0]-mAB[0]));
-    
-    // 4. Find s and t
-    var s = snumerator/denominator;
-    var t = tnumerator/denominator;
-   
-    var cc = vec3.create(); //create a vec3 to hold circumcenter;
-    var ix = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
-    var iy = mAB[1]+s*(pAB[1]-mAB[1]); //calculate y
-    var iz = mAB[2]+s*(pAB[2]-mAB[2]); // calculate z
     cc = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
         
     // find length of vector CC to a (radius of circumcircle)
