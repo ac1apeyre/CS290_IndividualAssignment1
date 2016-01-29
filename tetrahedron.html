@@ -1,0 +1,100 @@
+<!--Programmer: A. Clemence Lapeyre, skeleton provided by Professor Chris Tralie!-->
+<!--Purpose: Debugger for Tetrahedron Circumsphere !-->
+<html>
+<head>
+<script src = "GeomPrimitives.js"></script>
+<script src= "gl-matrix-min.js"></script>
+<script src = "plotly.min.js"></script>
+<body>
+
+<h2><a name = "angle">Extra Credit</a></h2>
+
+<table>
+<tr>
+<td>
+<!--Input Region!-->
+<table>
+<tr>
+<td><h2><font color = "#0000ff">a:</u> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "ax_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "ay_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "az_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#ff0000">b:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "bx_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "by_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "bz_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#ff00ff">c:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "cx_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "cy_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "cz_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#3366ff">d:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "dx_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "dy_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "dz_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+</table>
+</td>
+<td>
+
+<button type = "button" onclick = "callComputeAngle()">Compute Circumsphere</button>
+<table>
+<tr><td><h2>CircumSphere: </h2></td><td><input type="text" id="Circumcenter" size="10"> </input></td></tr>
+<tr><td><h2>Radius: </h2></td><td><input type="text" id="Radius" size="10"> </input></td></tr>
+</table>
+
+<script>
+//This function extracts the angle between vectors ab and ac and outputs
+//the result as text, along with drawing the vectors in the GUI
+function callComputeAngle() {
+    var ax = parseFloat(document.getElementById("ax_2").value);
+    var ay = parseFloat(document.getElementById("ay_2").value);
+    var az = parseFloat(document.getElementById("az_2").value);
+    var a = vec3.fromValues(ax, ay, az);
+    
+    var bx = parseFloat(document.getElementById("bx_2").value);
+    var by = parseFloat(document.getElementById("by_2").value);
+    var bz = parseFloat(document.getElementById("bz_2").value);
+    var b = vec3.fromValues(bx, by, bz);
+
+    var cx = parseFloat(document.getElementById("cx_2").value);
+    var cy = parseFloat(document.getElementById("cy_2").value);
+    var cz = parseFloat(document.getElementById("cz_2").value);
+    var c = vec3.fromValues(cx, cy, cz);
+    
+    var dx = parseFloat(document.getElementById("dx_2").value);
+    var dy = parseFloat(document.getElementById("dy_2").value);
+    var dz = parseFloat(document.getElementById("dz_2").value);
+    var d = vec3.fromValues(dx, dy, dz);
+    
+    //Log the vec3 objects to the console to make sure everything was parsed correctly
+    console.log("Computing circumsphere given " + vec3.str(a) + ", " + vec3.str(b) +  ", " + vec3.str(c) +", "+vec3.str(d));
+    
+    //Perform the projection
+    var res = getTetrahedronCircumsphere(a, b, c, d);
+	  Circumcenter = res.Circumcenter;
+	  Radius = res.Radius;
+	  if (Circumcenter === null) {
+	      document.getElementById('Circumcenter').innerHTML = "null";
+	  }
+	  else {
+	      document.getElementById('Circumcenter').innerHTML = "(" + Circumcenter[0].toFixed(1) + "," + Circumcenter[1].toFixed(1) + "," + Circumcenter[2].toFixed(1)" +")";
+	  }
+	  document.getElementById('Radius').innerHTML = "" + Radius;
+
+}
+
+</script>
+
+
+</body>
+</html>
