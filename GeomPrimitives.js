@@ -180,52 +180,25 @@ function getLineSegmentIntersection(a, b, c, d) {
 //Returns: On object of the form {circumcenter: vec3, R: float (radius)}
 function getTriangleCircumcenter(a, b, c) {
     // Calculate perpendicular bisectors of AB and AC in 3D
-    
-    // find normal to the plane
     var u1 = vec3.create(); //allocate a vector "u1" (ab)
     var u2 = vec3.create(); //allocate a vector "u2" (ac)
     vec3.subtract(u1, b, a); //calculate the vector from point a to point b (ab = b-a)
     vec3.subtract(u2, c, a); //calculate the vector from point a to point c (ac = c-a)
     var norm = vec3.create(); //allocate a vector for the plane normal
     vec3.cross(norm, u1, u2); //calculate norm using cross product
-   
-    // cross normal with AB
     var crossAB = vec3.create();
-    vec3.cross(crossAB, norm, u1);
-    
-    // cross normal with AC
+    vec3.cross(crossAB, norm, u1); // cross normal with AB
     var crossAC = vec3.create();
-    vec3.cross(crossAC, norm, u2);
-    
-    // find the vector that passes through midpoint of AB (perpendicular bisector of AB)
+    vec3.cross(crossAC, norm, u2); // cross normal with AC
     var mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2); // midpoint of AB
     var pAB = vec3.create(); //allocate a vector for the perpendicular bisector 
-    vec3.add(pAB, mAB, crossAB); 
-    //var uPAB = vec3.create();
-    //vec3.normalize(uPAB, pAB); // normalize perpendicular bisector of AB
-     
-    // find the vector that passes through midpoint of AC (perpendicular bisector of AC)
+    vec3.add(pAB, mAB, crossAB);  // calculate vector that passes through midpoint of AB (perpendicular bisector of AB)
     var mAC = vec3.fromValues((a[0]+c[0])/2, (a[1]+c[1])/2, (a[2]+c[2])/2);
     var pAC = vec3.create(); //allocate a vector for the perpendicular bisector
-    vec3.add(pAC, mAC, crossAC); 
-    //var uPAC = vec3.create();
-    //vec3.normalize(uPAC, pAC); // normalize perpendicular bisector of AC
-    
-
-    // System of Equations:
-    // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax  
-    // ay+s*uy=cy+t*vy   -->  s*uy - t*vy = cy-ay  
-    // az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az   
-    	
-    // Cramer's rule applied to 2 equations:
-    // s = {-vy(cx-ax) + vx(cy-ay)} / {-ux*vy + vx*uy}    
-    // t = {ux(cy-ay)  - uy(cx-ax)} / {-ux*vy + vx*uy}    
-    // where ux = bx-ax, uy = by-ay, vx = dx-cx, vy = dy-cy
-    
-    // determine which two of the equations are redundant by calculating the denominators for two sets	
+    vec3.add(pAC, mAC, crossAC); // calculate vector that passes through midpoint of AC (perpendicular bisector of AC)
+    // Solve for point of intersection using cramer's rule (same idea as segmentIntersection) but without constraints
 	var denominatorXY = (-(pAB[0]-mAB[0])*(pAC[1]-mAC[1])) + ((pAC[0]-mAC[0])*(pAB[1]-mAB[1]));
 	var denominatorXZ = (-(pAB[0]-mAB[0])*(pAC[2]-mAC[2])) + ((pAC[0]-mAC[0])*(pAB[2]-mAB[2]));
-		
 	if (denominatorXY==0){ // Use XZ
 		var snumerator = (-(pAC[2]-mAC[2])*(mAC[0]-mAB[0])) + ((pAC[0]-mAC[0])*(mAC[2]-mAB[2]));
 		var tnumerator = ((pAB[0]-mAB[0])*(mAC[2]-mAB[2]))  - ((pAB[2]-mAB[2])*(mAC[0]-mAB[0]));
@@ -234,29 +207,21 @@ function getTriangleCircumcenter(a, b, c) {
 	    var ix = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
         var iy = mAB[1]+s*(pAB[1]-mAB[1]); //calculate y
         var iz = mAB[2]+s*(pAB[2]-mAB[2]); //calculate z
-
 	}    
-		else{ // Use XY
-		    var snumerator = (-(pAC[1]-mAC[1])*(mAC[0]-mAB[0])) + ((pAC[0]-mAC[0])*(mAC[1]-mAB[1]));
-		    var tnumerator = ((pAB[0]-mAB[0])*(mAC[1]-mAB[1]))  - ((pAB[1]-mAB[1])*(mAC[0]-mAB[0]));
-		    var s = snumerator/denominatorXY;
-		    var t = tnumerator/denominatorXY;
-		    var ix = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
-        	var iy = mAB[1]+s*(pAB[1]-mAB[1]); //calculate y
-        	var iz = mAB[2]+s*(pAB[2]-mAB[2]); //calculate z
-		}
-
-    }
-   
+	else{ // Use XY
+		var snumerator = (-(pAC[1]-mAC[1])*(mAC[0]-mAB[0])) + ((pAC[0]-mAC[0])*(mAC[1]-mAB[1]));
+	    var tnumerator = ((pAB[0]-mAB[0])*(mAC[1]-mAB[1]))  - ((pAB[1]-mAB[1])*(mAC[0]-mAB[0]));
+	    var s = snumerator/denominatorXY;
+	    var t = tnumerator/denominatorXY;
+	    var ix = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
+      	var iy = mAB[1]+s*(pAB[1]-mAB[1]); //calculate y
+       	var iz = mAB[2]+s*(pAB[2]-mAB[2]); //calculate z
+	}
     cc = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
-        
-    // find length of vector CC to a (radius of circumcircle)
     var r = vec3.create();
-    vec3.subtract(r, a, cc);
-    var rad = vec3.length(r);
-    
+    vec3.subtract(r, a, cc); // vector from circumCenter to point a (radius)
+    var rad = vec3.length(r);  // find length of radius
     return {Circumcenter:cc, Radius:rad};
-}
 }
 
 //Purpose: Given four points on a 3D tetrahedron, compute the circumsphere
