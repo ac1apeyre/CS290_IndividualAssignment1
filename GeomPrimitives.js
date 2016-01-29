@@ -230,9 +230,9 @@ function getTriangleCircumcenter(a, b, c) {
     var iz = mAB[2]+s*(pAB[2]-mAB[2]); // calculate z
     cc = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
         
-    // find length of vector CC to mAB (radius of circumcircle)
+    // find length of vector CC to a (radius of circumcircle)
     var r = vec3.create();
-    vec3.subtract(r, mAB, cc);
+    vec3.subtract(r, a, cc);
     var rad = vec3.length(r);
     
     return {Circumcenter:cc, Radius:rad};  //This is a dummy
