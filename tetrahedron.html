@@ -95,7 +95,7 @@ function callComputeCC() {
     var res = getTetrahedronCircumsphere(a, b, c, d);
     C_abc = res.CircumcenterABC;
     C_bcd = res.CircumcenterBCD;
-    Circumcenter = res.CircumcenterT;
+    CircumcenterT = res.CircumcenterT;
     Radius = res.Radius;
 	    if (Circumcenter === null) {
 	        document.getElementById('Circumcenter').innerHTML = "null";
