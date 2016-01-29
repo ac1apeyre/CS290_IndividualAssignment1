@@ -221,18 +221,38 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     vec3.subtract(AB, b, a);
     vec3.subtract(BD, d, b);
     
-	//System of Equations in Matrix Form AX=B:
+	//System of Equations 
 	// | AC[0], AC[1], AC[2] | |x|   | mAC[0]*AC[0]+mAC[1]*AC[1]+mAC[2]*AC[2] |
 	// | AB[0], AB[1], AB[2] | |y| = | mAB[0]*AB[0]+mAB[1]*AB[1]+mAB[2]*AB[2] |
 	// | BD[0], BD[1], BD[2] | |z|   | mBD[0]*BD[0]+mBD[1]*BD[1]+mBD[2]*BD[2] |
-	// Solve: X=inv(A)*B
+
+	var a11 =AC[0];
+	var a12 =AC[1];
+	var a13 =AC[2];
+	var a21 =AB[0];
+	var a22 =AB[1];
+	var a23 =AB[2];
+	var a31 =BD[0];
+	var a32 =BD[1];
+	var a33 =BD[2];
 	
-	var matrixA = Math.matrix([[AC[0], AC[1], AC[2]], [AB[0], AB[1], AB[2]],[BD[0], BD[1], BD[2]]]);
-	var matrixB = Math.matrix([[mAC[0]*AC[0]+mAC[1]*AC[1]+mAC[2]*AC[2]],[mAB[0]*AB[0]+mAB[1]*AB[1]+mAB[2]*AB[2]],[mBD[0]*BD[0]+mBD[1]*BD[1]+mBD[2]*BD[2]]]);
-	var invA = Math.inv(matrixA);
-	var solution = Math.multiply(invA, B);
+	var d1=mAC[0]*AC[0]+mAC[1]*AC[1]+mAC[2]*AC[2];
+	var d1=mAB[0]*AB[0]+mAB[1]*AB[1]+mAB[2]*AB[2];
+	var d3=mBD[0]*BD[0]+mBD[1]*BD[1]+mBD[2]*BD[2];
 	
-	var cc = vec3.fromValues(solution[0], solution[1], solution[2]);
+	// Cramer's Rule 3x3
+	//determinant
+	var d = (a11*(a22*a33-a23*a32) - a12*(a21*a33-a23*a31) + a13*(a21*a32-a22*a31));
+	var dx = (d1*(a22*a33-a23*a32) - a12*(d2*a33-a23*d3) + a13*(d2*a32-a22*d3)); // a11 = d1, a21=d2, a31=d3
+	var dy = (a11*(d2*a33-a23*d3) - d1*(a21*a33-a23*a31) + a13*(a21*d3-d2*a31)); // a12 = d1, a22=d2, a32=d3
+	var dz = (a11*(a22*d3-d2*a32) - a12*(a21*d3-d2*a31) + d1*(a21*a32-a22*a31)); // a13 = d1, a23=d2, a33=d3
+	
+	var x = dx/d;
+	var y = dy/d;
+	var z = dz/d;
+	
+	
+	var cc = vec3.fromValues(x, y, z);
 	
 
     return {Circumcenter:cc, Radius:0.0};
