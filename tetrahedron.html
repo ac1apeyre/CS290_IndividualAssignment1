@@ -1,0 +1,99 @@
+<!--Programmer: Professor Chris Tralie; A. Clemence Lapeyre-->
+<!--Purpose: Debugger for tetrahedron circumcenter function (extra credit) !-->
+<html>
+<head>
+<script src = "GeomPrimitives.js"></script>
+<script src= "gl-matrix-min.js"></script>
+<script src = "plotly.min.js"></script>
+<body>
+
+<h2><a name = "angle">Extra Credit: Tetrahedron Circumcenter</a></h2>
+
+<table>
+<tr>
+<td>
+<!--Input Region!-->
+<table>
+<tr>
+<td><h2><font color = "#0000ff">a:</u> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "ax_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "ay_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "az_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#ff0000">b:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "bx_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "by_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "bz_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#ff00ff">c:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "cx_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "cy_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "cz_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+<tr>
+<td><h2><font color = "#ff00ff">c:</font> </h2></td>
+<td><h1>(</h1></td><td><input type="text" id = "dx_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "dy_2" size="3"></input></td><td><h1>,</h1></td>
+<td><input type="text" id = "dz_2" size="3"></input></td>
+<td><h1>)</h1></td>
+</tr>
+</table>
+</td>
+<td>
+<!--Visualization Region!-->
+<table border = "1" width = 500 height = 500>
+<tr><td>
+<div id = "angleVis">Visualization goes here once you compute the angle</div>
+</td></tr>
+</table>
+</td>
+</tr>
+</table>
+<button type = "button" onclick = "callComputeAngle()">Compute angle</button>
+<table>
+<tr><td><h2>Angle: </h2></td><td><input type="text" id="angleAnswer" size="10"> </input></td></tr>
+</table>
+
+<script> 
+
+// this function extracts the circumcenter from points a/b/c/d and outputs the result as text
+// no GUI
+function callComputeAngle() {
+    var ax = parseFloat(document.getElementById("ax_2").value);
+    var ay = parseFloat(document.getElementById("ay_2").value);
+    var az = parseFloat(document.getElementById("az_2").value);
+    var a = vec3.fromValues(ax, ay, az);
+    
+    var bx = parseFloat(document.getElementById("bx_2").value);
+    var by = parseFloat(document.getElementById("by_2").value);
+    var bz = parseFloat(document.getElementById("bz_2").value);
+    var b = vec3.fromValues(bx, by, bz);
+    
+    var cx = parseFloat(document.getElementById("cx_2").value);
+    var cy = parseFloat(document.getElementById("cy_2").value);
+    var cz = parseFloat(document.getElementById("cz_2").value);
+    var c = vec3.fromValues(cx, cy, cz);
+    
+    var dx = parseFloat(document.getElementById("cx_2").value);
+    var dy = parseFloat(document.getElementById("cy_2").value);
+    var dz = parseFloat(document.getElementById("cz_2").value);
+    var d = vec3.fromValues(cx, cy, cz);
+    
+    //Log the vec3 objects to the console to make sure everything was parsed correctly
+    console.log("Computing circumcenter of tetrahedron with vertices " + vec3.str(a) + ", " + vec3.str(b) + ", " + vec3.str(c) + ", and " + vec3.str(d);
+    
+    //Perform calculation
+    var circumCenter = getTetrahedronCircumsphere(a, b, c, d);
+    //Output result ??
+    document.getElementById("circumcenter").innerHTML = "(" + circumCenter[0].toFixed(1) + "," + circumCenter[1].toFixed(1) + "," +  circumCenter[2].toFixed(1) + ")";
+    }
+</script>
+
+
+</body>
+</html>
