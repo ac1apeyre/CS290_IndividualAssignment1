@@ -104,61 +104,72 @@ function getAboveOrBelow(a, b, c, d) {
 //Inputs: a (vec3), b (vec3), c (vec3), d (vec3)
 //Returns: intersection (vec3) or null if no intersection
 function getLineSegmentIntersection(a, b, c, d) {
-    //2D and 3D implementations-- comment out lines 147-152 for 2D only
+    //3D implementation
+    // create vectors
+    var ab = vec3.create(); //allocate a vector "ab"
+    var cd = vec3.create(); //allocate a vector "cd"
+    vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
+    vec3.subtract(cd, d, c); //calculate the vector from point c to point d (cd = d-c)
+    var normal = vec3.create();
+    vec3.cross(normal, ab, cd);
+    var ad = vec3.create();
+    vec3.subtract(ad, d, a);
     
-    //access x: vector[0]
-    //access y: vector[1]
-    //access z: vector[2]   (3D)
-    
-    // System of Equations:
-    // ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax  
-    // ay+s*uy=cy+t*vy   -->  s*uy - t*vy = cy-ay  
-    // az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az   (3D)
-    
-    // Solve X and Y equations using Cramer's rule
-    // s = {-vy(cx-ax) + vx(cy-ay)} / {-ux*vy + vx*uy}    
-    // t = {ux(cy-ay)  - uy(cx-ax)} / {-ux*vy + vx*uy}    
-    // where ux = bx-ax, uy = by-ay, vx = dx-cx, vy = dy-cy
-    
-    // 1. Calculate denominator of s and t
-    var denominator = (-(b[0]-a[0])*(d[1]-c[1])) + ((d[0]-c[0])*(b[1]-a[1]));
-    
-    // 2. Check if denominator is 0 (if YES- return NULL, the segments are parallel or on the same line)
-    if (denominator===0){
-        return null;
-    }
-    
-    // 3. Calculate numerator of s and t
-    var snumerator = (-(d[1]-c[1])*(c[0]-a[0])) + ((d[0]-c[0])*(c[1]-a[1]));
-    var tnumerator = ((b[0]-a[0])*(c[1]-a[1]))  - ((b[1]-a[1])*(c[0]-a[0]));
-    
-    // 4. Find s and t
-    var s = snumerator/denominator;
-    var t = tnumerator/denominator;
-    
-    // 5. Check to see if 0<=s<=1 and 0<=t<=1
-    if (s>=0 && s<=1 && t>=0 && t<=1){ //segment intersects
-        var intersection = vec3.create(); //create a vec3 to hold intersection point;
-        var ix = a[0]+s*(b[0]-a[0]); //calculate x
-        var iy = a[1]+s*(b[1]-a[1]); //calculate y
-        var iz = 0; //iz=0 in 2D
-        
-        //3D implementation: plug solution from 2D into Z equation
-        if ((a[2]+s*(b[2]-a[2])) === (c[2]+t*(d[2]-c[2]))){
-            iz = a[2]+s*(b[2]-a[2]);
-        }
-        else{
-            return null; //Z-coordinates do not match
-        }
-        //End 3D implementation
-        
-        intersection = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
-        
-        return intersection; //return segment intersection
+    if (vec3.dot(ad, normal)!=0){ // lines are skew
+    	return null;
     }
     else{
-        return null; // lines intersect but not the segments
+    	// System of Equations:
+    	// ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax  
+    	// ay+s*uy=cy+t*vy   -->  s*uy - t*vy = cy-ay  
+    	// az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az   
+    	
+    	// Cramer's rule applied to 2 equations:
+    	// s = {-vy(cx-ax) + vx(cy-ay)} / {-ux*vy + vx*uy}    
+    	// t = {ux(cy-ay)  - uy(cx-ax)} / {-ux*vy + vx*uy}    
+    	// where ux = bx-ax, uy = by-ay, vx = dx-cx, vy = dy-cy
+    
+    	// determine which two of the equations are redundant by calculating the denominators for two sets	
+		var denominatorXY = (-(b[0]-a[0])*(d[1]-c[1])) + ((d[0]-c[0])*(b[1]-a[1]));
+		var denominatorXZ = (-(b[0]-a[0])*(d[2]-c[2])) + ((d[0]-c[0])*(b[2]-a[2]));
+		
+		if (denominatorXY==0){ // Use XZ
+		    var snumerator = (-(d[2]-c[2])*(c[0]-a[0])) + ((d[0]-c[0])*(c[2]-a[2]));
+		    var tnumerator = ((b[0]-a[0])*(c[2]-a[2]))  - ((b[2]-a[2])*(c[0]-a[0]));
+		    var s = snumerator/denominatorXZ;
+		    var t = tnumerator/denominatorXZ;
+		    if (s>=0 && s<=1 && t>=0 && t<=1){ //segment intersects
+		        var intersection = vec3.create(); //create a vec3 to hold intersection point;
+		        var ix = a[0]+s*(b[0]-a[0]); //calculate x
+		        var iy = a[1]+s*(b[1]-a[1]); //calculate y
+		        var iz = a[2]+s*(b[2]-a[2]); //calculate z
+		        intersection = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
+		    	return intersection; //return segment intersection
+		    }
+		    else{
+		        return null; // lines intersect but not the segments
+		    }
+		}    
+		else{ // Use XY
+		    var snumerator = (-(d[1]-c[1])*(c[0]-a[0])) + ((d[0]-c[0])*(c[1]-a[1]));
+		    var tnumerator = ((b[0]-a[0])*(c[1]-a[1]))  - ((b[1]-a[1])*(c[0]-a[0]));
+		    var s = snumerator/denominatorXY;
+		    var t = tnumerator/denominatorXY;
+		    if (s>=0 && s<=1 && t>=0 && t<=1){ //segment intersects
+		        var intersection = vec3.create(); //create a vec3 to hold intersection point;
+		        var ix = a[0]+s*(b[0]-a[0]); //calculate x
+		        var iy = a[1]+s*(b[1]-a[1]); //calculate y
+		        var iz = a[2]+s*(b[2]-a[2]); //calculate z
+		        intersection = vec3.fromValues(ix, iy, iz); //fill vec3 with calculated values
+		    	return intersection; //return segment intersection
+		    }
+		    else{
+		        return null; // lines intersect but not the segments
+		    }
+		}
+
     }
+
 }
 
 //Purpose: Given three points on a triangle abc, compute the triangle circumcenter
