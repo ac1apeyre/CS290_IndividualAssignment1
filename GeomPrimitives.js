@@ -326,8 +326,8 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     vec3.subtract(vr, a, ccT);
     var rCS = vec3.length(vr);
     
-    //return {Circumcenter:ccT, Radius:rCS};
-    return {Circumcenter:vec3.fromValues(0,0,0), Radius:0.00}; // debugging purposes
+   
+    return {Circumcenter:ccT, Radius:rCS};
 }
 
 ///////////////////////////////////////////////////////////////////
