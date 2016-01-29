@@ -81,10 +81,10 @@ function callComputeCC() {
     var cz = parseFloat(document.getElementById("cz_2").value);
     var c = vec3.fromValues(cx, cy, cz);
     
-    var dx = parseFloat(document.getElementById("cx_2").value);
-    var dy = parseFloat(document.getElementById("cy_2").value);
-    var dz = parseFloat(document.getElementById("cz_2").value);
-    var d = vec3.fromValues(cx, cy, cz);
+    var dx = parseFloat(document.getElementById("dx_2").value);
+    var dy = parseFloat(document.getElementById("dy_2").value);
+    var dz = parseFloat(document.getElementById("dz_2").value);
+    var d = vec3.fromValues(dx, dy, dz);
     
     //Log the vec3 objects to the console to make sure everything was parsed correctly
     console.log("Computing circumcenter of tetrahedron with vertices " + vec3.str(a) + ", " + vec3.str(b) + ", " + vec3.str(c) + ", and " + vec3.str(d));
