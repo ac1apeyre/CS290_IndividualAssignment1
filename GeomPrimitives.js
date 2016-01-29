@@ -237,7 +237,7 @@ function getTetrahedronCircumsphere(a, b, c, d) {
 	var a33 =BD[2];
 	
 	var d1=mAC[0]*AC[0]+mAC[1]*AC[1]+mAC[2]*AC[2];
-	var d1=mAB[0]*AB[0]+mAB[1]*AB[1]+mAB[2]*AB[2];
+	var d2=mAB[0]*AB[0]+mAB[1]*AB[1]+mAB[2]*AB[2];
 	var d3=mBD[0]*BD[0]+mBD[1]*BD[1]+mBD[2]*BD[2];
 	
 	// Cramer's Rule 3x3
