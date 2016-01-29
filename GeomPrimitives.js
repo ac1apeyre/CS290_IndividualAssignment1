@@ -29,8 +29,19 @@ function projPerpVector(u, v) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: angle (radians - float)
 function getAngle(a, b, c) {
-    //TODO: Fill this in for task 1
-    return -1; //This is a dummy value for now.  Replace with true angle
+    //create vectors from the given points
+    //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
+    var ab = vec3.create(); //allocate a vector "ab"
+    var ac = vec3.create(); //allocate a vector "ac"
+    vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
+    vec3.subtract(ac, c, a); //calculate the vector from point a to point c (ac = c-a)
+    //find angle between the two vectors
+    //cos(theta)= (u dot v) / (|u|*|v|)
+    var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
+    var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
+    var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
+    var theta = Math.acos(quotient); //calculate the inverse cosine to get angle
+    return theta;
 }
 
 
@@ -39,8 +50,18 @@ function getAngle(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: area (float)
 function getTriangleArea(a, b, c) {
-    //TODO: Fill this in for task 2
-    return 0; //This is a dummy value for now.  Replace with true area
+    //create vectors from the given points
+    //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
+    var v1 = vec3.create(); //allocate a vector "v1" (ab)
+    var v2 = vec3.create(); //allocate a vector "v2" (ac)
+    vec3.subtract(v1, b, a); //calculate the vector from point a to point b (ab = b-a)
+    vec3.subtract(v2, c, a); //calculate the vector from point a to point c (ac = c-a)
+    
+    //area = 0.5 * |v1 x v2|
+    var cp = vec3.create(); //allocate a vector "cp" for the cross product of v1 and v2
+    vec3.cross(cp, v1, v2); //calculate cross product
+    var area = 0.5*vec3.len(cp) //calculate area by halving the magnitude of the cp vector (area of parallelogram formed by v1 and v2)
+    return area; 
 }
 
 //Purpose: For a plane determined by the points a, b, and c, with the plane
@@ -49,8 +70,34 @@ function getTriangleArea(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: 1 if d is above, -1 if d is below, 0 if d is on
 function getAboveOrBelow(a, b, c, d) {
-    //TODO: Fill this in for task 3
-    return 0;
+    //create plane vectors using points a, b, c
+    //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
+    var u1 = vec3.create(); //allocate a vector "u1" (ab)
+    var u2 = vec3.create(); //allocate a vector "u2" (ac)
+    vec3.subtract(u1, b, a); //calculate the vector from point a to point b (ab = b-a)
+    vec3.subtract(u2, c, a); //calculate the vector from point a to point c (ac = c-a)
+    
+    //calculate plane normal using crossproduct
+    var norm = vec3.create(); //allocate a vector for the plane normal
+    vec3.cross(norm, u1, u2); //calculate norm using cross product
+    
+    //create vector from point on plane to point d, arbitrarily A to D
+    var ad = vec3.create(); //allocate a vector "ad"
+    vec3.subtract(ad, d, a); //calculate the vector from point a to point d (ad = d-a)
+    
+    //calculate dot product between normal and vector ad
+    var dp = vec3.dot(norm, ad); //calculate dot product of normal and ad
+    
+    //determine if d is above, below, or on plane ABC based on sign of the dot product
+    if (dp===0){
+    	return 0; // point is on the plane
+    }
+    else if (dp>0){
+    	return 1; // point is on the same side as the normal vector
+    }
+    else{ // dp<0
+    	return -1; // point is on the opposite side of the normal vector
+    }
 }
 
 
