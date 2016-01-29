@@ -307,7 +307,6 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     var numeratorT = ((pCC1[0]-cc1[0])*(cc2[1]-cc1[1]))  - ((pCC1[1]-cc1[1])*(cc2[0]-cc1[0]));
     var sT = snumeratorT/denominatorT;
     var tT = numeratorT/denominatorT;
-    var ccT = vec3.create(); //create a vec3 to hold circumcenter;
     var ixT = cc1[0]+sT*(pCC1[0]-cc1[0]); //calculate x
     var iyT = cc1[1]+sT*(pCC1[1]-cc1[1]); //calculate y
     var izT = cc1[2]+sT*(pCC1[2]-cc1[2]); // calculate z
@@ -322,7 +321,7 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     //return {Circumcenter:ccT, Radius:rCS};
     
     //testing purposes
-    return {CircumcenterABC:cc1, CircumcenterBCD:cc2 , CircumcenterT: ccT, Radius:rCS};
+    return {CircumcenterABC:pCC1, CircumcenterBCD:pCC2 , CircumcenterT: ccT, Radius:denominatorT};
 }
 
 ///////////////////////////////////////////////////////////////////
