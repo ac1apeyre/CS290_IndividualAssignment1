@@ -29,14 +29,11 @@ function projPerpVector(u, v) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: angle (radians - float)
 function getAngle(a, b, c) {
-    //create vectors from the given points
-    //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
     var ab = vec3.create(); //allocate a vector "ab"
     var ac = vec3.create(); //allocate a vector "ac"
     vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
     vec3.subtract(ac, c, a); //calculate the vector from point a to point c (ac = c-a)
-    //find angle between the two vectors
-    //cos(theta)= (u dot v) / (|u|*|v|)
+    // angle between two vectors: cos(theta)= (u dot v) / (|u|*|v|)
     var numerator = vec3.dot(ab, ac); //calculate dot product of vectors ab and ac
     var denominator = vec3.len(ab)*vec3.len(ac); //calculate the product of the vectors' magnitudes
     var quotient = numerator/denominator; //divide dot product by the product of the magnitudes
@@ -44,20 +41,16 @@ function getAngle(a, b, c) {
     return theta;
 }
 
-
 //Purpose: Given three 3D vertices a, b, and c, compute the area of the triangle
 //spanned by them
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: area (float)
 function getTriangleArea(a, b, c) {
-    //create vectors from the given points
-    //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
     var v1 = vec3.create(); //allocate a vector "v1" (ab)
     var v2 = vec3.create(); //allocate a vector "v2" (ac)
     vec3.subtract(v1, b, a); //calculate the vector from point a to point b (ab = b-a)
     vec3.subtract(v2, c, a); //calculate the vector from point a to point c (ac = c-a)
-    
-    //area = 0.5 * |v1 x v2|
+    // area = 0.5 * |v1 x v2|
     var cp = vec3.create(); //allocate a vector "cp" for the cross product of v1 and v2
     vec3.cross(cp, v1, v2); //calculate cross product
     var area = 0.5*vec3.len(cp) //calculate area by halving the magnitude of the cp vector (area of parallelogram formed by v1 and v2)
@@ -70,24 +63,15 @@ function getTriangleArea(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3)
 //Returns: 1 if d is above, -1 if d is below, 0 if d is on
 function getAboveOrBelow(a, b, c, d) {
-    //create plane vectors using points a, b, c
-    //given two points A=(ax,ay,az) and B=(bx,by,bz), the vector *from* A *to* B is (bx-ax,by-ay,bz-az)
     var u1 = vec3.create(); //allocate a vector "u1" (ab)
     var u2 = vec3.create(); //allocate a vector "u2" (ac)
     vec3.subtract(u1, b, a); //calculate the vector from point a to point b (ab = b-a)
     vec3.subtract(u2, c, a); //calculate the vector from point a to point c (ac = c-a)
-    
-    //calculate plane normal using crossproduct
     var norm = vec3.create(); //allocate a vector for the plane normal
-    vec3.cross(norm, u1, u2); //calculate norm using cross product
-    
-    //create vector from point on plane to point d, arbitrarily A to D
+    vec3.cross(norm, u1, u2); //calculate plane normal using cross product
     var ad = vec3.create(); //allocate a vector "ad"
     vec3.subtract(ad, d, a); //calculate the vector from point a to point d (ad = d-a)
-    
-    //calculate dot product between normal and vector ad
     var dp = vec3.dot(norm, ad); //calculate dot product of normal and ad
-    
     //determine if d is above, below, or on plane ABC based on sign of the dot product
     if (dp===0){
     	return 0; // point is on the plane
@@ -100,14 +84,12 @@ function getAboveOrBelow(a, b, c, d) {
     }
 }
 
-
 //Purpose: Given a line segment ab and a line segment cd, compute the intersection
 //If they don't intersect, return null
 //Inputs: a (vec3), b (vec3), c (vec3), d (vec3)
 //Returns: intersection (vec3) or null if no intersection
 function getLineSegmentIntersection(a, b, c, d) {
     //3D implementation
-    // create vectors
     var ab = vec3.create(); //allocate a vector "ab"
     var cd = vec3.create(); //allocate a vector "cd"
     vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
@@ -116,7 +98,6 @@ function getLineSegmentIntersection(a, b, c, d) {
     vec3.cross(normal, ab, cd);
     var ad = vec3.create();
     vec3.subtract(ad, d, a);
-    
     if (vec3.dot(ad, normal)!=0){ // lines are skew
     	return null;
     }
@@ -125,7 +106,6 @@ function getLineSegmentIntersection(a, b, c, d) {
     	// ax+s*ux=cx+t*vx   -->  s*ux - t*vx = cx-ax  
     	// ay+s*uy=cy+t*vy   -->  s*uy - t*vy = cy-ay  
     	// az+s*uz=cz+t*vz   -->  s*uz - t*vz = cz-az   
-    	
     	// Cramer's rule applied to 2 equations:
     	// s = {-vy(cx-ax) + vx(cy-ay)} / {-ux*vy + vx*uy}    
     	// t = {ux(cy-ay)  - uy(cx-ax)} / {-ux*vy + vx*uy}    
@@ -134,7 +114,6 @@ function getLineSegmentIntersection(a, b, c, d) {
     	// determine which two of the equations are redundant by calculating the denominators for two sets	
 		var denominatorXY = (-(b[0]-a[0])*(d[1]-c[1])) + ((d[0]-c[0])*(b[1]-a[1]));
 		var denominatorXZ = (-(b[0]-a[0])*(d[2]-c[2])) + ((d[0]-c[0])*(b[2]-a[2]));
-		
 		if (denominatorXY==0){ // Use XZ
 		    var snumerator = (-(d[2]-c[2])*(c[0]-a[0])) + ((d[0]-c[0])*(c[2]-a[2]));
 		    var tnumerator = ((b[0]-a[0])*(c[2]-a[2]))  - ((b[2]-a[2])*(c[0]-a[0]));
@@ -230,7 +209,12 @@ function getTriangleCircumcenter(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3), d (vec3)
 //Returns: On object of the form {circumcenter: vec3, R: float (radius)}
 function getTetrahedronCircumsphere(a, b, c, d) {
-    //EXTRA CREDIT
+    // find circumcenter of triangular plane made by ABC
+    // find circumcenter of triangular plane made by ACD
+    // find line perpendicular to ABC through its circumcenter
+    // find line perpendicular to ACD through its circumcenter
+    // find intersection of these two lines (circumsphere center of tetrahedron)
+    // find radius of circumsphere (ccT to A,B,C, or D)
     return {Circumcenter:vec3.fromValues(0, 0, 0), Radius:0.0};
 }
 
