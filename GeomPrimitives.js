@@ -312,7 +312,7 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     // 3. Find intersection point of these two lines
     var denominatorT = (-(pCC1[0]-cc1[0])*(pCC2[1]-cc2[1])) + ((pCC2[0]-cc2[0])*(pCC1[1]-cc1[1]));
     var snumeratorT = (-(pCC2[1]-cc2[1])*(cc2[0]-cc1[0])) + ((pCC2[0]-cc2[0])*(cc2[1]-cc1[1]));
-    var numeratorT = ((pCC1[0]-cc1[0])*(cc2[1]-cc1[1]))  - ((pCC1[1]-cc1[1])*(cc12[0]-cc1[0]));
+    var numeratorT = ((pCC1[0]-cc1[0])*(cc2[1]-cc1[1]))  - ((pCC1[1]-cc1[1])*(cc2[0]-cc1[0]));
     var sT = snumeratorT/denominatorT;
     var tT = numeratorT/denominatorT;
     var ccT = vec3.create(); //create a vec3 to hold circumcenter;
