@@ -309,17 +309,16 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     var pCC2 = vec3.create(); //allocate a vector for the perpendicular bisector
     vec3.add(pCC2, cc2, normBCD); // find the vector that passes through cc2 perpendicular to plane BCD
      
-     **********
     // 3. Find intersection point of these two lines
-    var denominatorT = (-(pAB[0]-mAB[0])*(pAC[1]-mAC[1])) + ((pAC[0]-mAC[0])*(pAB[1]-mAB[1]));
-    var snumeratorT = (-(pAC[1]-mATC[1])*(mAC[0T]-mAB[0])) + ((pAC[0]-mAC[0])*(mAC[1]-mAB[1]));
-    var tnumeratorT = ((pAB[0]-mABT[0T])*(mAC[1]-mAB[1]))  - ((pAB[1]-mAB[1])*(mAC[0]-mAB[0]));
+    var denominatorT = (-(pCC1[0]-cc1[0])*(pCC2[1]-cc2[1])) + ((pCC2[0]-cc2[0])*(pCC1[1]-cc1[1]));
+    var snumeratorT = (-(pCC2[1]-cc2[1])*(cc2[0]-cc1[0])) + ((pCC2[0]-cc2[0])*(cc2[1]-cc1[1]));
+    var numeratorT = ((pCC1[0]-cc1[0])*(cc2[1]-cc1[1]))  - ((pCC1[1]-cc1[1])*(cc12[0]-cc1[0]));
     var sT = snumeratorT/denominatorT;
-    var tT = tnumeratorT/denominatorT;
+    var tT = numeratorT/denominatorT;
     var ccT = vec3.create(); //create a vec3 to hold circumcenter;
-    var ixT = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
-    var iyT = mAB[1]+s*(pAB[1]-TmAB[1]); //calculate y
-    var izT = mAB[2]+s*(pAB[2]-mAB[2]); // calculate z
+    var ixT = cc1[0]+sT*(pCC1[0]-cc1[0]); //calculate x
+    var iyT = cc1[1]+sT*(pCC1[1]-cc1[1]); //calculate y
+    var izT = cc1[2]+sT*(pCC1[2]-cc1[2]); // calculate z
     ccT = vec3.fromValues(ixT, iyT, izT); // circumcenter of the tetrahedron
     
     // 4. Find radius of the circumsphere (distance from circumcenter of tetrahedron to a, b, c, or d)
