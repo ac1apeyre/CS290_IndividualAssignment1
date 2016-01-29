@@ -57,6 +57,8 @@
 <!--</table>-->
 <button type = "button" onclick = "callComputeCC()">Compute Circumcenter</button>
 <table>
+<tr><td align = "right"><font color = "#000000"><b>C_abc</b></font></td><td><div id="C_abc"></div></td></tr>
+<tr><td align = "right"><font color = "#000000"><b>C_bcd</b></font></td><td><div id="C_bcd"></div></td></tr>
 <tr><td align = "right"><font color = "#000000"><b>Circumcenter</b></font></td><td><div id="Circumcenter"></div></td></tr>
 <tr><td align = "right">Radius</td><td><div id="Radius"></div></td></tr>
 </table>
@@ -91,13 +93,17 @@ function callComputeCC() {
     
     //Perform calculation
     var res = getTetrahedronCircumsphere(a, b, c, d);
-    Circumcenter = res.Circumcenter;
+    C_abc = res.CircumcenterABC;
+    C_bcd = res.CircumcenterBCD;
+    Circumcenter = res.CircumcenterT;
     Radius = res.Radius;
 	    if (Circumcenter === null) {
 	        document.getElementById('Circumcenter').innerHTML = "null";
 	    }
 	    else {
-	        document.getElementById('Circumcenter').innerHTML = "(" + Circumcenter[0].toFixed(1) + "," + Circumcenter[1].toFixed(1) + "," + Circumcenter[2].toFixed(1) + ")";
+	        document.getElementById('C_abc').innerHTML = "(" + C_abc[0].toFixed(1) + "," + C_abc[1].toFixed(1) + "," + C_abc[2].toFixed(1) + ")";
+	        document.getElementById('C_bcd').innerHTML = "(" + C_bcd[0].toFixed(1) + "," + C_bcd[1].toFixed(1) + "," + C_bcd[2].toFixed(1) + ")";
+	        document.getElementById('Circumcenter').innerHTML = "(" + CircumcenterT[0].toFixed(1) + "," + CircumcenterT[1].toFixed(1) + "," + CircumcenterT[2].toFixed(1) + ")";
 	    }
 	    document.getElementById('Radius').innerHTML = "" + Radius;
 }
