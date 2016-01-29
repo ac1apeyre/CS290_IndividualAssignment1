@@ -268,16 +268,15 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     var tnumerator = ((pAB[0]-mAB[0])*(mAC[1]-mAB[1]))  - ((pAB[1]-mAB[1])*(mAC[0]-mAB[0]));
     var s = snumerator/denominator;
     var t = tnumerator/denominator;
-    var cc = vec3.create(); //create a vec3 to hold circumcenter;
     var ix = mAB[0]+s*(pAB[0]-mAB[0]); //calculate x
     var iy = mAB[1]+s*(pAB[1]-mAB[1]); //calculate y
     var iz = mAB[2]+s*(pAB[2]-mAB[2]); // calculate z
     cc1 = vec3.fromValues(ix, iy, iz); // circumcenter of the plane ABC
 
     // circumcenter of bcd
-    var v1 = vec3.create(); //allocate a vector "v1" (bc)
+    var v1 = vec3.create(); //allocate a vector "v1" (cb)
     var v2 = vec3.create(); //allocate a vector "v2" (cd)
-    vec3.subtract(v1, c, b); //calculate the vector from point b to point c 
+    vec3.subtract(v1, b, c); //calculate the vector from point b to point c 
     vec3.subtract(v2, d, c); //calculate the vector from point c to point d
     var normBCD = vec3.create(); //allocate a vector for the plane normal
     vec3.cross(normBCD, v1, v2); //calculate normal to the plane using cross product
@@ -297,7 +296,6 @@ function getTetrahedronCircumsphere(a, b, c, d) {
     var tnumerator2 = ((pBC[0]-mBC[0])*(mCD[1]-mBC[1]))  - ((pBC[1]-mBC[1])*(mCD[0]-mBC[0]));
     var s2 = snumerator2/denominator2;
     var t2 = tnumerator2/denominator2;
-    var cc2 = vec3.create(); //create a vec3 to hold circumcenter;
     var ix2 = mBC[0]+s2*(pBC[0]-mBC[0]); //calculate x
     var iy2 = mBC[1]+s2*(pBC[1]-mBC[1]); //calculate y
     var iz2 = mBC[2]+s2*(pBC[2]-mBC[2]); // calculate z
