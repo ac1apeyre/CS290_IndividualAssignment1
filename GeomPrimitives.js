@@ -109,7 +109,7 @@ function getLineSegmentIntersection(a, b, c, d) {
     var ab = vec3.create(); //allocate a vector "ab"
     var cd = vec3.create(); //allocate a vector "cd"
     vec3.subtract(ab, b, a); //calculate the vector from point a to point b (ab = b-a)
-    vec3.subtract(ac, d, c); //calculate the vector from point c to point d (cd = d-c)
+    vec3.subtract(cd, d, c); //calculate the vector from point c to point d (cd = d-c)
     var normal = vec3.create();
     vec3.cross(normal, ab, cd);
     var ad = vec3.create();
