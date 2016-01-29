@@ -209,13 +209,33 @@ function getTriangleCircumcenter(a, b, c) {
 //Inputs: a (vec3), b (vec3), c (vec3), d (vec3)
 //Returns: On object of the form {circumcenter: vec3, R: float (radius)}
 function getTetrahedronCircumsphere(a, b, c, d) {
-    // find circumcenter of triangular plane made by ABC
-    // find circumcenter of triangular plane made by ACD
-    // find line perpendicular to ABC through its circumcenter
-    // find line perpendicular to ACD through its circumcenter
-    // find intersection of these two lines (circumsphere center of tetrahedron)
-    // find radius of circumsphere (ccT to A,B,C, or D)
-    return {Circumcenter:vec3.fromValues(0, 0, 0), Radius:0.0};
+    // calculate midpoints of 3 segments non co-planar
+    var mAC = vec3.fromValues((a[0]+c[0])/2, (a[1]+c[1])/2, (a[2]+c[2])/2);
+    var mAB = vec3.fromValues((a[0]+b[0])/2, (a[1]+b[1])/2, (a[2]+b[2])/2);
+    var mBD = vec3.fromValues((d[0]+b[0])/2, (d[1]+b[1])/2, (d[2]+b[2])/2);
+    // calculate vectors corresponding to the three segments
+    var AC = vec3.create();
+    var AB = vec3.create();
+    var BD = vec3.create();
+    vec3.subtract(AC, c, a);
+    vec3.subtract(AB, b, a);
+    vec3.subtract(BD, d, b);
+    
+	//System of Equations in Matrix Form AX=B:
+	// | AC[0], AC[1], AC[2] | |x|   | mAC[0]*AC[0]+mAC[1]*AC[1]+mAC[2]*AC[2] |
+	// | AB[0], AB[1], AB[2] | |y| = | mAB[0]*AB[0]+mAB[1]*AB[1]+mAB[2]*AB[2] |
+	// | BD[0], BD[1], BD[2] | |z|   | mBD[0]*BD[0]+mBD[1]*BD[1]+mBD[2]*BD[2] |
+	// Solve: X=inv(A)*B
+	
+	var matrixA = math.matrix([[AC[0], AC[1], AC[2]], [AB[0], AB[1], AB[2]],[BD[0], BD[1], BD[2]]]);
+	var matrixB = math.matrix([[mAC[0]*AC[0]+mAC[1]*AC[1]+mAC[2]*AC[2]],[mAB[0]*AB[0]+mAB[1]*AB[1]+mAB[2]*AB[2]],[mBD[0]*BD[0]+mBD[1]*BD[1]+mBD[2]*BD[2]]]);
+	var invA = math.inv(matrixA);
+	var solution = math.multiply(invA, B);
+	
+	var cc = vec3.fromValues(solution[0], solution[1], solution[2]);
+	
+
+    return {Circumcenter:cc, Radius:0.0};
 }
 
 ///////////////////////////////////////////////////////////////////
