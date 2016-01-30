@@ -7,7 +7,7 @@
 <script src = "plotly.min.js"></script>
 <body>
 
-<h2><a name = "angle">Extra Credit</a></h2>
+<h2><a name = "tetrahedron">Extra Credit</a></h2>
 
 <table>
 <tr>
@@ -36,7 +36,7 @@
 <td><h1>)</h1></td>
 </tr>
 <tr>
-<td><h2><font color = "#3366ff">d:</font> </h2></td>
+<td><h2><font color = "#336600">d:</font> </h2></td>
 <td><h1>(</h1></td><td><input type="text" id = "dx_2" size="3"></input></td><td><h1>,</h1></td>
 <td><input type="text" id = "dy_2" size="3"></input></td><td><h1>,</h1></td>
 <td><input type="text" id = "dz_2" size="3"></input></td>
@@ -48,8 +48,8 @@
 
 <button type = "button" onclick = "callComputeAngle()">Compute Circumsphere</button>
 <table>
-<tr><td><h2>CircumSphere: </h2></td><td><input type="text" id="Circumcenter" size="10"> </input></td></tr>
-<tr><td><h2>Radius: </h2></td><td><input type="text" id="Radius" size="10"> </input></td></tr>
+<tr><td><h2>CircumSphere: </h2></td><td><input type="text" id="CircumcenterAnswer" size="10"> </input></td></tr>
+<tr><td><h2>Radius: </h2></td><td><input type="text" id="RadiusAnswer" size="10"> </input></td></tr>
 </table>
 
 <script>
@@ -81,15 +81,15 @@ function callComputeAngle() {
     
     //Perform the projection
     var res = getTetrahedronCircumsphere(a, b, c, d);
-	  Circumcenter = res.Circumcenter;
-	  Radius = res.Radius;
-	  if (Circumcenter === null) {
-	      document.getElementById('Circumcenter').innerHTML = "null";
+	  CC = res.Circumcenter;
+	  R = res.Radius;
+	  if (CC === null) {
+	      document.getElementById('CircumcenterAnswer').innerHTML = "null";
 	  }
 	  else {
-	      document.getElementById('Circumcenter').innerHTML = "(" + Circumcenter[0].toFixed(1) + "," + Circumcenter[1].toFixed(1) + "," + Circumcenter[2].toFixed(1) +")";
+	      document.getElementById('CircumcenterAnswer').innerHTML = "(" + CC[0].toFixed(1) + "," + CC[1].toFixed(1) + "," + CC[2].toFixed(1) +")";
 	  }
-	  document.getElementById('Radius').innerHTML = "" + Radius;
+	  document.getElementById('RadiusAnswer').innerHTML = "" + R;
 
 }
 
