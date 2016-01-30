@@ -1,5 +1,6 @@
-<!--Programmer: A. Clemence Lapeyre, skeleton provided by Professor Chris Tralie!-->
-<!--Purpose: Debugger for Tetrahedron Circumsphere !-->
+<!--Programmer: A. Clemence Lapeyre!-->
+<!--Skeleton code provided by Prof. Chris Tralie!-->
+<!--Purpose: Debugger for tetrahedron circumcenter function (extra credit) !-->
 <html>
 <head>
 <script src = "GeomPrimitives.js"></script>
@@ -7,7 +8,7 @@
 <script src = "plotly.min.js"></script>
 <body>
 
-<h2><a name = "tetrahedron">Extra Credit</a></h2>
+<h2><a name = "angle">Extra Credit: Tetrahedron Circumcenter</a></h2>
 
 <table>
 <tr>
@@ -36,7 +37,7 @@
 <td><h1>)</h1></td>
 </tr>
 <tr>
-<td><h2><font color = "#336600">d:</font> </h2></td>
+<td><h2><font color = "#66ff99">d:</font> </h2></td>
 <td><h1>(</h1></td><td><input type="text" id = "dx_2" size="3"></input></td><td><h1>,</h1></td>
 <td><input type="text" id = "dy_2" size="3"></input></td><td><h1>,</h1></td>
 <td><input type="text" id = "dz_2" size="3"></input></td>
@@ -45,17 +46,25 @@
 </table>
 </td>
 <td>
-
-<button type = "button" onclick = "callComputeAngle()">Compute Circumsphere</button>
+<!--Visualization Region!-->
+<!--<table border = "1" width = 500 height = 500>-->
+<!--<tr><td>-->
+<!--<div id = "angleVis">Visualization goes here once you compute the angle</div>-->
+<!--</td></tr>-->
+<!--</table>-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<button type = "button" onclick = "callComputeCC()">Compute Circumcenter</button>
 <table>
-<tr><td><h2>CircumSphere: </h2></td><td><input type="text" id="CircumcenterAnswer" size="10"> </input></td></tr>
-<tr><td><h2>Radius: </h2></td><td><input type="text" id="RadiusAnswer" size="10"> </input></td></tr>
+<tr><td align = "right"><font color = "#000000"><b>Circumcenter</b></font></td><td><div id="Circumcenter"></div></td></tr>
+<tr><td align = "right">Radius</td><td><div id="Radius"></div></td></tr>
 </table>
 
-<script>
-//This function extracts the angle between vectors ab and ac and outputs
-//the result as text, along with drawing the vectors in the GUI
-function callComputeAngle() {
+<script> 
+// this function extracts the circumcenter from points a/b/c/d and outputs the result as text
+// no GUI
+function callComputeCC() {
     var ax = parseFloat(document.getElementById("ax_2").value);
     var ay = parseFloat(document.getElementById("ay_2").value);
     var az = parseFloat(document.getElementById("az_2").value);
@@ -65,7 +74,7 @@ function callComputeAngle() {
     var by = parseFloat(document.getElementById("by_2").value);
     var bz = parseFloat(document.getElementById("bz_2").value);
     var b = vec3.fromValues(bx, by, bz);
-
+    
     var cx = parseFloat(document.getElementById("cx_2").value);
     var cy = parseFloat(document.getElementById("cy_2").value);
     var cz = parseFloat(document.getElementById("cz_2").value);
@@ -77,22 +86,20 @@ function callComputeAngle() {
     var d = vec3.fromValues(dx, dy, dz);
     
     //Log the vec3 objects to the console to make sure everything was parsed correctly
-    console.log("Computing circumsphere given " + vec3.str(a) + ", " + vec3.str(b) +  ", " + vec3.str(c) +", "+vec3.str(d));
+    console.log("Computing circumcenter of tetrahedron with vertices " + vec3.str(a) + ", " + vec3.str(b) + ", " + vec3.str(c) + ", and " + vec3.str(d));
     
-    //Perform the projection
+    //Perform calculation
     var res = getTetrahedronCircumsphere(a, b, c, d);
-	  CC = res.Circumcenter;
-	  R = res.Radius;
-	  if (CC === null) {
-	      document.getElementById('CircumcenterAnswer').innerHTML = "null";
-	  }
-	  else {
-	      document.getElementById('CircumcenterAnswer').innerHTML = "(" + CC[0].toFixed(1) + "," + CC[1].toFixed(1) + "," + CC[2].toFixed(1) +")";
-	  }
-	  document.getElementById('RadiusAnswer').innerHTML = "" + R;
-
+    Circumcenter = res.Circumcenter;
+    Radius = res.Radius;
+	    if (Circumcenter === null) {
+	        document.getElementById('Circumcenter').innerHTML = "null";
+	    }
+	    else {
+	        document.getElementById('Circumcenter').innerHTML = "(" + Circumcenter[0].toFixed(1) + "," + Circumcenter[1].toFixed(1) + "," + Circumcenter[2].toFixed(1) + ")";
+	    }
+	    document.getElementById('Radius').innerHTML = "" + Radius;
 }
-
 </script>
 
 
