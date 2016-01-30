@@ -253,9 +253,11 @@ function getTetrahedronCircumsphere(a, b, c, d) {
 	
 	
 	var cc = vec3.fromValues(x, y, z);
-	
+	var ccA= vec3.create(); // length of segment from center to point A (radius)
+	vec3.subtract(ccA, cc, a);
+	var radius = vec3.length(ccA);
 
-    return {Circumcenter:cc, Radius:0.0};
+    return {Circumcenter:cc, Radius:radius};
 }
 
 ///////////////////////////////////////////////////////////////////
